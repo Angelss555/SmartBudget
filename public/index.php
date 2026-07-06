@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <!-- Proyecto: SmartBudget
      Página: Inicio de sesión 
@@ -7,14 +11,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Iniciar sesión</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
 </head>
 <body class="auth-page">
 
     <main class="container">
 
         <header class="auth-header">
-            <img src="img/logo.png" alt="Aqui vamos a poder el logo" class="logo">
+            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo">
             <h1>SmartBudget</h1>
             <p class="subtitle">Organiza y controla tus finanzas personales</p>
         </header>
@@ -23,7 +27,7 @@
             <h2 id="login-title">Iniciar sesión</h2>
 
             <!-- El "action" apunta al futuro controlador PHP de autenticación -->
-            <form id="form-login" method="POST" action="controllers/AuthController.php" novalidate>
+            <form id="form-login" method="POST" action="../app/controllers/AuthController.php" novalidate>
 
                 <div class="campo">
                     <label for="email">Correo electrónico</label>
@@ -41,8 +45,8 @@
             </form>
 
             <div class="enlaces-auth">
-                <a href="recuperar.html">¿Olvidaste tu contraseña?</a>
-                <a href="registro.html">Crear una cuenta nueva</a>
+                <a href="../app/views/recuperar.php">¿Olvidaste tu contraseña?</a>
+                <a href="../app/views/registro.php">Crear una cuenta nueva</a>
             </div>
         </section>
 

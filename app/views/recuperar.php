@@ -9,14 +9,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Recuperar contraseña</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
 </head>
 <body class="auth-page">
 
     <main class="container">
 
         <header class="auth-header">
-            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
             <h1>SmartBudget</h1>
             <p class="subtitle">Recupera el acceso a tu cuenta</p>
         </header>
@@ -25,7 +25,7 @@
             <h2 id="recuperar-title">Recuperar contraseña</h2>
             <p class="texto-ayuda">Ingresa el correo con el que te registraste y te enviaremos un enlace para restablecer tu contraseña.</p>
 
-            <form id="form-recuperar" method="POST" action="controllers/AuthController.php" novalidate>
+            <form id="form-recuperar" method="POST" action="../controllers/AuthController.php" novalidate>
 
                 <div class="campo">
                     <label for="email">Correo electrónico</label>
@@ -38,7 +38,7 @@
             </form>
 
             <div class="enlaces-auth">
-                <a href="index.html">Volver a iniciar sesión</a>
+                <a href="../../public/index.php">Volver a iniciar sesión</a>
             </div>
         </section>
 
@@ -48,6 +48,6 @@
         <p>&copy; 2026 SmartBudget - Grupo 4</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../../public/js/script.js"></script>
 </body>
 </html>

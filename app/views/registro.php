@@ -2,21 +2,21 @@
 <!--
   Proyecto: SmartBudget
   Página: Registro de nuevos usuarios
-  Corresponde a la función 1, egistro de Usuarios
+  Corresponde a la función 1, Registro de Usuarios
 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Crear cuenta</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
 </head>
 <body class="auth-page">
 
     <main class="container">
 
         <header class="auth-header">
-            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
             <h1>SmartBudget</h1>
             <p class="subtitle">Crea tu cuenta para empezar a organizar tus finanzas</p>
         </header>
@@ -24,7 +24,7 @@
         <section class="auth-card" aria-labelledby="registro-title">
             <h2 id="registro-title">Registro de usuario</h2>
 
-            <form id="form-registro" method="POST" action="controllers/AuthController.php" novalidate>
+            <form id="form-registro" method="POST" action="../controllers/AuthController.php" novalidate>
 
                 <div class="campo">
                     <label for="usuario">Nombre de usuario</label>
@@ -32,13 +32,17 @@
                 </div>
 
                 <div class="campo">
-                    <label for="nombre">Primer nombre</label>
+                    <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Primer nombre" required>
                 </div>
 
                 <div class="campo">
-                    <label for="apellido">Primer apellido</label>
-                    <input type="text" id="apellido" name="apellido" placeholder="Primer apellido" required>
+                    <label for="primer_apellido">Primer apellido</label>
+                    <input type="text" id="primer_apellido" name="primer_apellido" placeholder="Primer apellido" required>
+                </div>
+                <div class="campo">
+                    <label for="segundo_apellido">Segundo apellido</label>
+                    <input type="text" id="segundo_apellido" name="segundo_apellido" placeholder="Segundo apellido" required>
                 </div>
 
                 <div class="campo">
@@ -62,7 +66,7 @@
             </form>
 
             <div class="enlaces-auth">
-                <a href="index.html">Ya tengo una cuenta, iniciar sesión</a>
+                <a href="../../public/index.php">Ya tengo una cuenta, iniciar sesión</a>
             </div>
         </section>
 
@@ -72,6 +76,6 @@
         <p>&copy; 2026 SmartBudget - Grupo 4
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../../public/js/script.js"></script>
 </body>
 </html>

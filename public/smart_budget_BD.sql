@@ -24,13 +24,15 @@ CREATE TABLE estados(
 CREATE TABLE usuarios (
 	id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
-    apellido_materno VARCHAR(50),
-    apellido_paterno VARCHAR(50),
+    primer_apellido VARCHAR(50),
+    segundo_apellido VARCHAR(50),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
-    id_estado INT,
+    id_estado INT DEFAULT 2,
     CONSTRAINT usuarios_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
+
+SELECT * FROM usuarios;
 
 CREATE TABLE categorias_ingreso(
 	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
@@ -155,22 +157,22 @@ INSERT INTO estados (nombre) VALUES
 ('activo');
 
 -- Creación de 14 usuarios de prueba
-INSERT INTO usuarios(nombre, apellido_materno, apellido_paterno, email, password, id_estado)
+INSERT INTO usuarios(nombre, primer_apellido, segundo_apellido, email, password, id_estado)
 VALUES
-('Donovan', 'Aguilar', 'Cárdenas', 'donovan@prueba.com', '123', 2),
-('Jenny', 'Liang', 'Jiang', 'jenny@prueba.com', '123', 2),
-('Ángel', 'Rodríguez', 'Vargas', 'angel@prueba.com', '123', 2),
-('Xavier', 'Marín', 'Araya', 'xavier@prueba.com', '123', 2),
-('María', 'González', 'Pérez', 'maria@prueba.com', '123', 2),
-('Carlos', 'Ramírez', 'Sánchez', 'carlos@prueba.com', '123', 2),
-('Lucía', 'Torres', 'Hernández', 'lucia@prueba.com', '123', 2),
-('Diego', 'Fernández', 'López', 'diego@prueba.com', '123', 2),
-('Sofía', 'Gómez', 'Martínez', 'sofia@prueba.com', '123', 2),
-('Miguel', 'Hernández', 'García', 'miguel@prueba.com', '123', 2),
-('Ana', 'Ruiz', 'Díaz', 'ana@prueba.com', '123', 2),
-('Jorge', 'Sánchez', 'Jiménez', 'jorge@prueba.com', '123', 2),
-('Carmen', 'Vargas', 'Silva', 'carmen@prueba.com', '123', 1),
-('Ricardo', 'Morales', 'Castro', 'ricardo@prueba.com', '123', 1);
+('Donovan', 'Aguilar', 'Cárdenas', 'donovan@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Jenny', 'Liang', 'Jiang', 'jenny@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Ángel', 'Rodríguez', 'Vargas', 'angel@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Xavier', 'Marín', 'Araya', 'xavier@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('María', 'González', 'Pérez', 'maria@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Carlos', 'Ramírez', 'Sánchez', 'carlos@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Lucía', 'Torres', 'Hernández', 'lucia@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Diego', 'Fernández', 'López', 'diego@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Sofía', 'Gómez', 'Martínez', 'sofia@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Miguel', 'Hernández', 'García', 'miguel@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Ana', 'Ruiz', 'Díaz', 'ana@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Jorge', 'Sánchez', 'Jiménez', 'jorge@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
+('Carmen', 'Vargas', 'Silva', 'carmen@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 1),
+('Ricardo', 'Morales', 'Castro', 'ricardo@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 1);
 
 INSERT INTO categorias_ingreso (nombre, id_estado) VALUES
 ('Salario', 2),

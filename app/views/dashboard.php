@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../public/index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <!--
   Proyecto: SmartBudget
@@ -10,30 +19,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
 </head>
 <body>
 
     <header class="topbar">
         <div class="marca">
-            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
+            
+            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
             <span>SmartBudget</span>
         </div>
 
         <nav class="menu-principal" aria-label="Navegación principal">
             <ul>
-                <li><a href="dashboard.html" class="activo">Dashboard</a></li>
-                <li><a href="ingresos.html">Ingresos</a></li>
-                <li><a href="gastos.html">Gastos</a></li>
-                <li><a href="reportes.html">Reportes</a></li>
-                <li><a href="metas.html">Metas de ahorro</a></li>
-                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="/app/views/dashboard.php" class="activo">Dashboard</a></li>
+                <li><a href="/app/views/ingresos.php">Ingresos</a></li>
+                <li><a href="/app/views/gastos.php">Gastos</a></li>
+                <li><a href="/app/views/reportes.php">Reportes</a></li>
+                <li><a href="/app/views/metas.php">Metas de ahorro</a></li>
+                <li><a href="/app/views/configuracion.php">Configuración</a></li>
             </ul>
         </nav>
 
         <div class="usuario-sesion">
             <span id="nombre-usuario">Hola, Usuario</span>
-            <a href="index.html" class="btn-salir">Cerrar sesión</a>
+            <a href="../../public/index.php" class="btn-salir">Cerrar sesión</a>
         </div>
     </header>
 
@@ -79,9 +89,9 @@
         <section class="accesos-rapidos">
             <h2>Accesos rápidos</h2>
             <div class="botones-rapidos">
-                <a href="ingresos.html" class="btn-secundario">+ Nuevo ingreso</a>
-                <a href="gastos.html" class="btn-secundario">+ Nuevo gasto</a>
-                <a href="metas.html" class="btn-secundario">+ Nueva meta de ahorro</a>
+                <a href="ingresos.php" class="btn-secundario">+ Nuevo ingreso</a>
+                <a href="gastos.php" class="btn-secundario">+ Nuevo gasto</a>
+                <a href="metas.php" class="btn-secundario">+ Nueva meta de ahorro</a>
             </div>
         </section>
 
@@ -91,6 +101,6 @@
         <p>&copy; 2026 SmartBudget - Grupo 4</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../../public/js/script.js"></script>
 </body>
 </html>

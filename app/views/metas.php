@@ -9,30 +9,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Metas de ahorro</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
 </head>
 <body>
 
     <header class="topbar">
         <div class="marca">
-            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
+            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
             <span>SmartBudget</span>
         </div>
 
         <nav class="menu-principal" aria-label="Navegación principal">
             <ul>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="ingresos.html">Ingresos</a></li>
-                <li><a href="gastos.html">Gastos</a></li>
-                <li><a href="reportes.html">Reportes</a></li>
-                <li><a href="metas.html" class="activo">Metas de ahorro</a></li>
-                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="ingresos.php">Ingresos</a></li>
+                <li><a href="gastos.php">Gastos</a></li>
+                <li><a href="reportes.php">Reportes</a></li>
+                <li><a href="metas.php" class="activo">Metas de ahorro</a></li>
+                <li><a href="configuracion.php">Configuración</a></li>
             </ul>
         </nav>
 
         <div class="usuario-sesion">
             <span id="nombre-usuario">Hola, Usuario</span>
-            <a href="index.html" class="btn-salir">Cerrar sesión</a>
+            <a href="../../public/index.php" class="btn-salir">Cerrar sesión</a>
         </div>
     </header>
 
@@ -91,6 +91,6 @@
         <p>&copy; 2026 SmartBudget - Grupo 4</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../../public/js/script.js"></script>
 </body>
 </html>
