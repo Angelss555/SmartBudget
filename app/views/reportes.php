@@ -9,13 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Reportes financieros</title>
-    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
+    <link rel="stylesheet" href="../../public/css/styles.css">
 </head>
 <body>
 
     <header class="topbar">
-        <div class="marca">
-            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
+        <div class="marca">  
+            <img src="../../public/img/icon.png" alt="Icono de Smartbudget"  class="icon-small">
             <span>SmartBudget</span>
         </div>
 
@@ -71,7 +71,7 @@
                 </div>
 
                 <button type="submit" class="btn-primario">Consultar</button>
-                <button type="button" class="btn-secundario" id="btn-descargar">Descargar reporte</button>
+                <button type="button" class="btn-secundario" id="btn-descargar" >Descargar reporte</button>
             </form>
         </section>
 

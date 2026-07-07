@@ -9,15 +9,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Crear cuenta</title>
-    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
+    <link rel="stylesheet" href="../../public/css/styles.css">
 </head>
 <body class="auth-page">
 
     <main class="container">
 
         <header class="auth-header">
-            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
-            <h1>SmartBudget</h1>
+            <h1 class="logo">
+                <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+            </h1>
             <p class="subtitle">Crea tu cuenta para empezar a organizar tus finanzas</p>
         </header>
 

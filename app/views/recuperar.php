@@ -5,19 +5,22 @@
   Corresponde a la función 3, Recuperación de contraseña
 -->
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Recuperar contraseña</title>
-    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
+    <link rel="stylesheet" href="../../public/css/styles.css">
 </head>
+
 <body class="auth-page">
 
     <main class="container">
 
-        <header class="auth-header">
-            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
-            <h1>SmartBudget</h1>
+         <header class="auth-header">
+            <h1 class="logo">
+                <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+            </h1>
             <p class="subtitle">Recupera el acceso a tu cuenta</p>
         </header>
 
@@ -50,4 +53,5 @@
 
     <script src="../../public/js/script.js"></script>
 </body>
+
 </html>

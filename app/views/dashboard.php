@@ -19,14 +19,14 @@ if (!isset($_SESSION['usuario'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Dashboard</title>
-    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
+    <link rel="stylesheet" href="../../public/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
     <header class="topbar">
-        <div class="marca">
-            
-            <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo-small">
+        <div class="marca">  
+            <img src="../../public/img/icon.png" alt="Icono de Smartbudget"  class="icon-small">
             <span>SmartBudget</span>
         </div>
 
@@ -77,21 +77,25 @@ if (!isset($_SESSION['usuario'])) {
         <section class="graficos">
             <div class="tarjeta-grafico">
                 <h2>Gastos por categoría</h2>
-                <div class="placeholder-grafico" id="grafico-categorias">Gráfico de gastos por categoría</div>
+                <div class="grafico-contenedor">
+                    <canvas id="grafico-categorias" aria-label="Gráfico de gastos por categoría"></canvas>
+                </div>
             </div>
 
             <div class="tarjeta-grafico">
                 <h2>Ingresos vs. gastos (últimos 6 meses)</h2>
-                <div class="placeholder-grafico" id="grafico-tendencia">Gráfico de tendencia mensual</div>
+                <div class="grafico-contenedor">
+                    <canvas id="grafico-tendencia" aria-label="Gráfico de tendencia mensual"></canvas>
+                </div>
             </div>
         </section>
 
         <section class="accesos-rapidos">
             <h2>Accesos rápidos</h2>
             <div class="botones-rapidos">
-                <a href="ingresos.php" class="btn-secundario">+ Nuevo ingreso</a>
-                <a href="gastos.php" class="btn-secundario">+ Nuevo gasto</a>
-                <a href="metas.php" class="btn-secundario">+ Nueva meta de ahorro</a>
+                <a href="ingresos.php" class="btn-terciario">+ Nuevo ingreso</a>
+                <a href="gastos.php" class="btn-terciario">+ Nuevo gasto</a>
+                <a href="metas.php" class="btn-terciario">+ Nueva meta de ahorro</a>
             </div>
         </section>
 

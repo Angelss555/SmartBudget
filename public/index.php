@@ -11,15 +11,16 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBudget | Iniciar sesión</title>
-    <link rel="stylesheet" href="/smartbudget/public/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="auth-page">
 
     <main class="container">
 
         <header class="auth-header">
-            <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo">
-            <h1>SmartBudget</h1>
+            <h1 class="logo">
+                <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+            </h1>
             <p class="subtitle">Organiza y controla tus finanzas personales</p>
         </header>
 
