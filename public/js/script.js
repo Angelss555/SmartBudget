@@ -190,7 +190,6 @@
         const mensajeError = document.getElementById("mensaje-error");
 
         form.addEventListener("submit", function (e) {
-            e.preventDefault();
 
             const emailValue = email.value.trim();
             const passwordValue = password.value.trim();
@@ -200,6 +199,7 @@
 
             // Validaciones básicas
             if (emailValue === "" || passwordValue === "") {
+                e.preventDefault();
                 mensajeError.textContent = "Por favor complete todos los campos.";
                 mensajeError.hidden = false;
                 return;
@@ -209,25 +209,10 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailRegex.test(emailValue)) {
+                e.preventDefault();
                 mensajeError.textContent = "Ingrese un correo válido.";
                 mensajeError.hidden = false;
                 return;
-            }
-
-            // SIMULACIÓN DE LOGIN 
-            const usuarioDemo = "admin@smartbudget.com";
-            const passDemo = "1234";
-
-            if (emailValue === usuarioDemo && passwordValue === passDemo) {
-
-                alert("Bienvenido a SmartBudget");
-
-                // Redirección al dashboard
-                window.location.href = "dashboard.html";
-
-            } else {
-                mensajeError.textContent = "Correo o contraseña incorrectos.";
-                mensajeError.hidden = false;
             }
         });
     });

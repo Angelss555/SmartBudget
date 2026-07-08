@@ -19,10 +19,14 @@ if ($_POST['accion'] == "login") {
     if ($user) {
         $_SESSION['usuario'] = $user; 
 
-        header("Location: ../views/dashboard.php");
+    header("Location: ../views/dashboard.php?login=ok");
+
         exit(); 
     } else {
-        echo "Error en login";
+        header("Location: ../../public/index.php?error=login");
+
+        exit();
+
     }
 }
 

@@ -159,6 +159,7 @@ INSERT INTO estados (nombre) VALUES
 -- Creación de 14 usuarios de prueba
 INSERT INTO usuarios(nombre, primer_apellido, segundo_apellido, email, password, id_estado)
 VALUES
+('Admin', 'PrimerApellido', 'SegundoApellido', 'admin@smartbudget.com', '$2y$10$UlaJNZHxopZWGLaZsIvK7u7OEoXbX6GEKbu9w.iYEkusCFeznAAHG', 2),
 ('Donovan', 'Aguilar', 'Cárdenas', 'donovan@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Jenny', 'Liang', 'Jiang', 'jenny@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Ángel', 'Rodríguez', 'Vargas', 'angel@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),

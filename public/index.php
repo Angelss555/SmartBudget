@@ -1,5 +1,7 @@
 <?php
 session_start();
+$errorLogin = isset($_GET['error']) && $_GET['error'] === 'login';
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +29,6 @@ session_start();
         <section class="auth-card" aria-labelledby="login-title">
             <h2 id="login-title">Iniciar sesión</h2>
 
-            <!-- El "action" apunta al futuro controlador PHP de autenticación -->
             <form id="form-login" method="POST" action="../app/controllers/AuthController.php" novalidate>
 
                 <div class="campo">
@@ -40,8 +41,9 @@ session_start();
                     <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" required>
                 </div>
 
-                <p class="mensaje-error" id="mensaje-error" hidden>Correo o contraseña incorrectos.</p>
-
+                <p class="mensaje-error" id="mensaje-error" <?php echo (isset($_GET['error']) && $_GET['error'] === 'login') ? '' : 'hidden'; ?>>
+                    Correo o contraseña incorrectos.
+                </p>
                 <button type="submit" name="accion" value="login" class="btn-primario">Ingresar</button>
             </form>
 

@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../public/index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <!--
   Proyecto: SmartBudget
@@ -21,17 +30,17 @@
 
         <nav class="menu-principal" aria-label="Navegación principal">
             <ul>
-                <li><a href="/app/views/dashboard.php">Dashboard</a></li>
-                <li><a href="/app/views/ingresos.php">Ingresos</a></li>
-                <li><a href="/app/views/gastos.php">Gastos</a></li>
-                <li><a href="/app/views/reportes.php">Reportes</a></li>
-                <li><a href="/app/views/metas.php">Metas de ahorro</a></li>
-                <li><a href="/app/views/configuracion.php" class="activo">Configuración</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="ingresos.php">Ingresos</a></li>
+                <li><a href="gastos.php">Gastos</a></li>
+                <li><a href="reportes.php">Reportes</a></li>
+                <li><a href="metas.php">Metas de ahorro</a></li>
+                <li><a href="configuracion.php" class="activo">Configuración</a></li>
             </ul>
         </nav>
 
         <div class="usuario-sesion">
-            <span id="nombre-usuario">Hola, Usuario</span>
+            <span id="nombre-usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></span>
             <a href="../../public/index.php" class="btn-salir">Cerrar sesión</a>
         </div>
     </header>

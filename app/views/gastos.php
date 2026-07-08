@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../public/index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <!--
   Proyecto: SmartBudget
@@ -32,7 +41,7 @@
         </nav>
 
         <div class="usuario-sesion">
-            <span id="nombre-usuario">Hola, Usuario</span>
+            <span id="nombre-usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></span>
             <a href="../../public/index.php" class="btn-salir">Cerrar sesión</a>
         </div>
     </header>
