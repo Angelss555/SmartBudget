@@ -21,7 +21,7 @@ $errorLogin = isset($_GET['error']) && $_GET['error'] === 'login';
 
         <header class="auth-header">
             <h1 class="logo">
-                <img src="../../public/img/logo.png" alt="Logotipo de SmartBudget" class="logo">
+                <img src="img/logo.png" alt="Logotipo de SmartBudget" class="logo">
             </h1>
             <p class="subtitle">Organiza y controla tus finanzas personales</p>
         </header>
