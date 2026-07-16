@@ -109,9 +109,9 @@ $loginOk = isset($_GET['login']) && $_GET['login'] === 'ok';
     </footer>
 
     <?php if ($loginOk): ?>
-        <script>
-            alert("Ingreso exitoso");
-        </script>
+        <div class="toast toast-success" id="loginToast">
+            Inicio de sesión exitoso
+        </div>
     <?php endif; ?>
 
     <script src="../../public/js/script.js"></script>

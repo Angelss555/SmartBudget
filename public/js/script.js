@@ -72,7 +72,21 @@
         document.getElementById("grafico-tendencia").innerHTML =
                 "<strong>Aquí aparecerá el gráfico de ingresos vs gastos.</strong>";
     });
-    
+
+    window.addEventListener('load', function () {
+        const toast = document.getElementById('loginToast');
+
+        if (toast) {
+            toast.classList.add('show');
+        }
+
+        setTimeout(function () {
+            toast.classList.remove('show');
+        }, 3000);
+
+
+    });
+
  /*  ===================================================
  *      Html de gastos
  *  ===================================================

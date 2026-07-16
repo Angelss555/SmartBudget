@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "../models/CategoriaGasto.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
@@ -53,8 +54,8 @@ if (!isset($_SESSION['usuario'])) {
         <section class="tarjeta-formulario">
             <h2>Registrar nuevo gasto</h2>
 
-            <!-- El "action" apunta al futuro controlador PHP de gastos -->
-            <form id="form-gasto" method="POST" action="controllers/GastoController.php" novalidate>
+            <!-- El "action" apunta al controlador PHP de gastos -->
+            <form id="form-gasto" method="POST" action="controllers/ExpenseController.php" novalidate>
 
                 <div class="campo">
                     <label for="nombre-gasto">Nombre del gasto</label>
