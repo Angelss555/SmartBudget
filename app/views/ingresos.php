@@ -8,7 +8,8 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-$categorias = CategoriaIngreso::obtenerPorUsuario($_SESSION['USUARIO']['id_usuario'])
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+$categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
 
 ?>
 
@@ -58,7 +59,7 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($_SESSION['USUARIO']['id_usuar
                 <h2>Registrar nuevo ingreso</h2>
 
                 <!-- El "action" apunta al controlador PHP de ingresos -->
-                <form id="form-ingreso" method="POST" action="controllers/IncomeController.php" novalidate>
+                <form id="form-ingreso" method="POST" action="../controllers/IncomeController.php" novalidate>
 
                     <div class="campo">
                         <label for="nombre">Nombre del ingreso</label>
@@ -71,8 +72,8 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($_SESSION['USUARIO']['id_usuar
                     </div>
 
                     <div class="campo">
-                        <label for="categoria">Categoría</label>
-                        <select id="categoria" name="categoria" required>
+                        <label for="id_categoria">Categoría</label>
+                        <select id="id_categoria" name="id_categoria" required>
                             <option value="">Selecciona una categoría</option>
 
                             <?php while ($categoria= $categorias->fetch_assoc()): ?>
@@ -85,13 +86,15 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($_SESSION['USUARIO']['id_usuar
 
                     <div class="campo">
                         <label for="fecha-ingreso">Fecha</label>
-                        <input type="date" id="fecha-ingreso" name="fecha" required>
+                        <input type="date" id="fecha-ingreso" name="fecha-ingreso" required>
                     </div>
 
                     <div class="campo">
                         <label for="descripcion-ingreso">Descripción</label>
                         <textarea id="descripcion-ingreso" name="descripcion" placeholder="Detalle adicional (opcional)"></textarea>
                     </div>
+
+                    <input type="hidden" name="id_estado" value="2">
 
                     <button type="submit" name="accion" value= "crearIngreso" class="btn-primario">Guardar ingreso</button>
                 </form>

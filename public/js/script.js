@@ -240,16 +240,13 @@
         const form = document.getElementById("form-ingreso");
         if (!form) return;
 
-        const tbody = document.querySelector("#tabla-ingresos tbody");
+        // const tbody = document.querySelector("#tabla-ingresos tbody");
 
         form.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const nombre = document.getElementById("nombre-ingreso").value.trim();
-            const monto = document.getElementById("monto-ingreso").value;
-            const tipo = document.getElementById("tipo-ingreso").value;
-            const categoriaSelect = document.getElementById("categoria-ingreso");
-            const categoria = categoriaSelect.options[categoriaSelect.selectedIndex].text;
+            const nombre = document.getElementById("nombre").value.trim();
+            const monto = document.getElementById("monto").value;
+            const categoriaSelect = document.getElementById("id_categoria");
+            const idCategoria = categoriaSelect.value;
             const fecha = document.getElementById("fecha-ingreso").value;
 
             // Validaciones
@@ -257,14 +254,15 @@
                 nombre === "" ||
                 monto === "" ||
                 Number(monto) <= 0 ||
-                tipo === "" ||
-                categoria === "" ||
+                idCategoria === "" ||
                 fecha === ""
             ) {
                 alert("Por favor complete todos los campos obligatorios.");
+                e.preventDefault();
                 return;
             }
 
+            /* Código anterior: simulaba un ingreso en el historial sin guardarlo en la base de datos.
             // Eliminar fila vacía si existe
             const filaVacia = document.querySelector(".fila-vacia");
             if (filaVacia) filaVacia.remove();
@@ -276,7 +274,6 @@
                 <td>${fecha}</td>
                 <td>${nombre}</td>
                 <td>${categoria}</td>
-                <td>${tipo}</td>
                 <td>₡${Number(monto).toLocaleString("es-CR")}</td>
                 <td>
                     <button class="btn-eliminar">Eliminar</button>
@@ -301,6 +298,7 @@
             });
             alert("Ingreso registrado correctamente");
             form.reset();
+            */
         });
     });
 

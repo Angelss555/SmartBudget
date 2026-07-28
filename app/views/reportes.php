@@ -1,10 +1,14 @@
 <?php
 session_start();
+require_once "../models/CategoriaGasto.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
     exit();
 }
+
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+$categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -71,11 +75,11 @@ if (!isset($_SESSION['usuario'])) {
                     <label for="categoria-reporte">Categoría</label>
                     <select id="categoria-reporte" name="categoria">
                         <option value="todas">Todas las categorías</option>
-                        <option value="alimentacion">Alimentación</option>
-                        <option value="transporte">Transporte</option>
-                        <option value="salud">Salud</option>
-                        <option value="educacion">Educación</option>
-                        <option value="ocio">Ocio</option>
+                        <?php while ($categoria = $categorias->fetch_assoc()): ?>
+                            <option value="<?php echo (int) $categoria['id_categoria']; ?>">
+                                <?php echo htmlspecialchars($categoria['nombre']); ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
 

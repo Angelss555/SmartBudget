@@ -6,6 +6,9 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
     exit();
 }
+
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+$categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -71,13 +74,11 @@ if (!isset($_SESSION['usuario'])) {
                     <label for="categoria-gasto">Categoría</label>
                     <select id="categoria-gasto" name="categoria" required>
                         <option value="">Selecciona una categoría</option>
-                        <option value="alimentacion">Alimentación</option>
-                        <option value="transporte">Transporte</option>
-                        <option value="salud">Salud</option>
-                        <option value="educacion">Educación</option>
-                        <option value="ocio">Ocio</option>
-                        <option value="pagos-fijos">Pagos fijos mensuales</option>
-                        <option value="pagos-trimestrales">Pagos trimestrales</option>
+                        <?php while ($categoria = $categorias->fetch_assoc()): ?>
+                            <option value="<?php echo (int) $categoria['id_categoria']; ?>">
+                                <?php echo htmlspecialchars($categoria['nombre']); ?>
+                            </option>
+                        <?php endwhile; ?>
                         <option value="nueva">+ Crear categoría nueva</option>
                     </select>
                 </div>
@@ -119,11 +120,14 @@ if (!isset($_SESSION['usuario'])) {
                     <label for="filtro-categoria">Categoría</label>
                     <select id="filtro-categoria" name="filtro_categoria">
                         <option value="todas">Todas</option>
-                        <option value="alimentacion">Alimentación</option>
-                        <option value="transporte">Transporte</option>
-                        <option value="salud">Salud</option>
-                        <option value="educacion">Educación</option>
-                        <option value="ocio">Ocio</option>
+                        <?php
+                        $categoriasFiltro = CategoriaGasto::obtenerPorUsuario($id_usuario);
+                        while ($categoria = $categoriasFiltro->fetch_assoc()):
+                        ?>
+                            <option value="<?php echo (int) $categoria['id_categoria']; ?>">
+                                <?php echo htmlspecialchars($categoria['nombre']); ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
             </div>

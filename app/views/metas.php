@@ -53,21 +53,44 @@ if (!isset($_SESSION['usuario'])) {
             <h2>Crear nueva meta</h2>
 
             <!-- El "action" apunta al futuro controlador PHP de metas de ahorro -->
-            <form id="form-meta" method="POST" action="controllers/MetaController.php" novalidate>
+            <form id="form-meta" method="POST" action="controllers/GoalController.php" novalidate>
 
                 <div class="campo">
-                    <label for="nombre-meta">Nombre de la meta</label>
-                    <input type="text" id="nombre-meta" name="nombre" placeholder="Ej. Viaje, Fondo de emergencia" required>
+                    <label for="nombre">Nombre de la meta</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Viaje, Fondo de emergencia" required>
                 </div>
 
                 <div class="campo">
-                    <label for="monto-objetivo">Monto objetivo</label>
-                    <input type="number" id="monto-objetivo" name="monto_objetivo" min="0" step="0.01" placeholder="0.00" required>
+                    <label for="monto_actual">Monto actual</label>
+                    <input type="number" id="monto_actual" name="monto_actual" min="0" step="0.01" placeholder="0.00" required>
                 </div>
 
                 <div class="campo">
-                    <label for="fecha-estimada">Fecha estimada de cumplimiento</label>
-                    <input type="date" id="fecha-estimada" name="fecha_estimada" required>
+                    <label for="monto_objetivo">Monto objetivo</label>
+                    <input type="number" id="monto_objetivo" name="monto_objetivo" min="0" step="0.01" placeholder="0.00" required>
+                </div>
+
+                <div class="campo">
+                    <label for="fecha_inicio">Fecha de inicio</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+                </div>
+
+                <div class="campo">
+                    <label for="fecha_cumplimiento">Fecha estimada de cumplimiento</label>
+                    <input type="date" id="fecha_cumplimiento" name="fecha_cumplimiento" required>
+                </div>
+
+                <div class="campo">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción de la meta..."></textarea>
+                </div>
+
+                <div class="campo">
+                    <label for="id_estado">Estado</label>
+                    <select id="id_estado" name="id_estado" required>
+                        <option value="1">inactivo</option>
+                        <option value="2">activo</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn-primario">Crear meta</button>

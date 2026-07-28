@@ -53,7 +53,7 @@ if (!isset($_SESSION['usuario'])) {
             <h2>Notificaciones por correo</h2>
 
             <!-- El "action" apunta al futuro controlador PHP de configuración -->
-            <form id="form-notificaciones" method="POST" action="controllers/ConfiguracionController.php">
+            <form id="form-notificaciones" method="POST" action="controllers/ConfigurationController.php">
 
                 <div class="campo campo-switch">
                     <label for="notif-reporte">Reporte financiero mensual</label>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['usuario'])) {
         <section class="tarjeta-formulario">
             <h2>Datos de la cuenta</h2>
 
-            <form id="form-perfil" method="POST" action="controllers/ConfiguracionController.php">
+            <form id="form-perfil" method="POST" action="controllers/ConfigurationController.php">
 
                 <div class="campo">
                     <label for="nombre-perfil">Nombre completo</label>
