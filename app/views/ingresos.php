@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../models/CategoriaIngreso.php";
+require_once "../models/Ingreso.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
@@ -10,6 +11,7 @@ if (!isset($_SESSION['usuario'])) {
 
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
 $categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
+$ingresos = Ingreso::obtenerPorUsuario($id_usuario);
 
 ?>
 
@@ -67,7 +69,7 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
                     </div>
 
                     <div class="campo">
-                        <label for="monto">Monto</label> /*revisar validación dentro de la etiqueta*/
+                        <label for="monto">Monto</label> <!--revisar validación dentro de la etiqueta-->
                         <input type="number" id="monto" name="monto" min="0" step="0.01" placeholder="0.00" required>
                     </div>
 
@@ -102,7 +104,7 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
 
             <section class="tarjeta-tabla">
                 <div class="encabezado-tabla">
-                    <h2>Historial de ingresos</h2>
+                    <h2>Listado de ingresos</h2>
 
                     <div class="filtros">
                         <label for="filtro-periodo">Periodo</label>
@@ -120,16 +122,38 @@ $categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
                             <th>Fecha</th>
                             <th>Nombre</th>
                             <th>Categoría</th>
-                            <th>Tipo</th>
+                            <th>Descripción</th>
                             <th>Monto</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Las filas se llenarán dinámicamente desde la base de datos -->
-                        <tr class="fila-vacia">
-                            <td colspan="6">Todavía no hay ingresos registrados.</td>
-                        </tr>
+                        <?php if($ingresos->num_rows === 0): ?>
+                            <tr class="fila-vacia">
+                                <td colspan="6">Todavía no hay ingresos registrados.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php while ($ingreso = $ingresos->fetch_assoc()): ?>
+                                <tr>
+                                    <td>
+                                        <?php 
+                                            $fecha = new DateTime($ingreso['fecha']);
+                                            echo $fecha->format('d/m/Y'); 
+                                        ?>
+                                     </td>
+                                    <td><?php echo htmlspecialchars($ingreso['nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($ingreso['categoria']); ?></td>
+                                    <td><?php echo htmlspecialchars($ingreso['descripcion'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td>₡<?php echo number_format((float) $ingreso['monto'], 2); ?></td>
+                                    <td>
+                                        <form method="POST" action="../controllers/IncomeController.php">
+                                            <input type="hidden" name="id_ingreso" value="<?php echo (int) $ingreso['id_ingreso']; ?>">
+                                            <button type="submit" name="accion" value="eliminarIngreso" class="btn-eliminar">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </section>

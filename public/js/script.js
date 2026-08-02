@@ -39,38 +39,64 @@
 */
     document.addEventListener("DOMContentLoaded", function () {
 
-        // Datos cargados
-        const ingresos = 50000;
-        const gastos = 10000;
+        const graficoCategorias = document.getElementById("grafico-categorias");
+        const gastosCategoriaData = document.getElementById("gastos-categoria-data");
+        const gastosPorCategoria = gastosCategoriaData
+            ? JSON.parse(gastosCategoriaData.textContent)
+            : [];
+        const categoriasGasto = gastosPorCategoria.map(dato => dato.categoria);
+        const montosGasto = gastosPorCategoria.map(dato => dato.total);
 
-        // Cálculo del balance
-        const balance = ingresos - gastos;
+        new Chart(graficoCategorias, {
+            type: "bar",
 
-        // Mostrar datos en pantalla
-        document.getElementById("total-ingresos").textContent =
-                "₡" + ingresos.toLocaleString("es-CR");
+            data: {
+                labels: categoriasGasto,
 
-        document.getElementById("total-gastos").textContent =
-                "₡" + gastos.toLocaleString("es-CR");
+                datasets: [{
+                    label: "Monto gastado",
 
-        document.getElementById("balance-disponible").textContent =
-                "₡" + balance.toLocaleString("es-CR");
+                    data: montosGasto,
 
-        // Mostrar alerta si los gastos son altos
-        const alerta = document.getElementById("alerta-categoria");
+                    backgroundColor: "#9ca3af",
+                    borderRadius: 0
+                }]
+            },
 
-        if (gastos >= 180000) {
-            alerta.hidden = false;
-        } else {
-            alerta.hidden = true;
-        }
+            options: {
+                indexAxis: "y",
+                responsive: true,
 
-        // Marcadores para futuros gráficos
-        document.getElementById("grafico-categorias").innerHTML =
-                "<strong>Aquí aparecerá el gráfico por categorías.</strong>";
+                plugins: {
+                    legend: {
+                        display: false
+                    },
 
-        document.getElementById("grafico-tendencia").innerHTML =
-                "<strong>Aquí aparecerá el gráfico de ingresos vs gastos.</strong>";
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return "₡" +
+                                    context.raw.toLocaleString("es-CR");
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            callback: function (valor) {
+                                return "₡" +
+                                    valor.toLocaleString("es-CR");
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
     });
 
     window.addEventListener('load', function () {
@@ -93,99 +119,28 @@
 */
     document.addEventListener("DOMContentLoaded", function () {
 
-        // Referencias
         const form = document.getElementById("form-gasto");
         if (!form) return;
 
-        const categoria = document.getElementById("categoria-gasto");
-        const campoNueva = document.getElementById("campo-categoria-nueva");
-        const nuevaCategoria = document.getElementById("categoria-nueva");
-        const tbody = document.getElementById("tbody-gastos");
-
-        // Mostrar u ocultar el campo de nueva categoría
-        categoria.addEventListener("change", function () {
-
-            if (this.value === "nueva") {
-                campoNueva.hidden = false;
-                nuevaCategoria.required = true;
-            } else {
-                campoNueva.hidden = true;
-                nuevaCategoria.required = false;
-                nuevaCategoria.value = "";
-            }
-
-        });
-
-        // Registrar gasto
         form.addEventListener("submit", function (e) {
+            const nombre = document.getElementById("nombre").value.trim();
+            const monto = document.getElementById("monto").value;
+            const idCategoria = document.getElementById("id_categoria").value;
+            const fecha = document.getElementById("fecha").value;
 
-            e.preventDefault();
-
-            const nombre = document.getElementById("nombre-gasto").value.trim();
-            const monto = document.getElementById("monto-gasto").value;
-            const frecuencia = document.getElementById("frecuencia-gasto").value;
-            const fecha = document.getElementById("fecha-gasto").value;
-            const descripcion = document.getElementById("descripcion-gasto").value;
-
-            let categoriaTexto = categoria.options[categoria.selectedIndex].text;
-
-            if (categoria.value === "nueva") {
-                categoriaTexto = nuevaCategoria.value.trim();
-            }
-
-            // Validaciones
             if (
                 nombre === "" ||
                 monto === "" ||
                 Number(monto) <= 0 ||
-                fecha === "" ||
-                categoriaTexto === ""
+                idCategoria === "" ||
+                fecha === ""
             ) {
+                e.preventDefault();
                 alert("Complete todos los campos obligatorios.");
                 return;
             }
 
-            // Eliminar mensaje de tabla vacía
-            const filaVacia = document.querySelector(".fila-vacia");
-
-            if (filaVacia) {
-                filaVacia.remove();
-            }
-
-            // Crear fila
-            const fila = document.createElement("tr");
-
-            fila.innerHTML = `
-                <td>${fecha}</td>
-                <td>${nombre}</td>
-                <td>${categoriaTexto}</td>
-                <td>${frecuencia}</td>
-                <td>₡${Number(monto).toLocaleString("es-CR")}</td>
-                <td>
-                    <button class="btn-eliminar">Eliminar</button>
-                </td>
-            `;
-            tbody.appendChild(fila);
-            
-            // Botón eliminar
-            fila.querySelector(".btn-eliminar").addEventListener("click", function () {
-
-                fila.remove();
-
-                if (tbody.children.length === 0) {
-
-                    tbody.innerHTML = `
-                        <tr class="fila-vacia">
-                            <td colspan="6">
-                                Todavía no hay gastos registrados.
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-            alert("Gasto registrado correctamente.");
-            form.reset();
-            campoNueva.hidden = true;
+            alert("Gasto registrado correctamente");
         });
     });
     
@@ -240,8 +195,6 @@
         const form = document.getElementById("form-ingreso");
         if (!form) return;
 
-        // const tbody = document.querySelector("#tabla-ingresos tbody");
-
         form.addEventListener("submit", function (e) {
             const nombre = document.getElementById("nombre").value.trim();
             const monto = document.getElementById("monto").value;
@@ -262,43 +215,7 @@
                 return;
             }
 
-            /* Código anterior: simulaba un ingreso en el historial sin guardarlo en la base de datos.
-            // Eliminar fila vacía si existe
-            const filaVacia = document.querySelector(".fila-vacia");
-            if (filaVacia) filaVacia.remove();
-
-            // Crear nueva fila
-            const fila = document.createElement("tr");
-
-            fila.innerHTML = `
-                <td>${fecha}</td>
-                <td>${nombre}</td>
-                <td>${categoria}</td>
-                <td>₡${Number(monto).toLocaleString("es-CR")}</td>
-                <td>
-                    <button class="btn-eliminar">Eliminar</button>
-                </td>
-            `;
-
-            tbody.appendChild(fila);
-
-            // Botón eliminar
-            fila.querySelector(".btn-eliminar").addEventListener("click", function () {
-
-                fila.remove();
-
-                // Si no hay filas, mostrar mensaje vacío
-                if (tbody.children.length === 0) {
-                    tbody.innerHTML = `
-                        <tr class="fila-vacia">
-                            <td colspan="6">Todavía no hay ingresos registrados.</td>
-                        </tr>
-                    `;
-                }
-            });
             alert("Ingreso registrado correctamente");
-            form.reset();
-            */
         });
     });
 
@@ -309,81 +226,32 @@
     document.addEventListener("DOMContentLoaded", function () {
 
         const form = document.getElementById("form-meta");
-        const listaMetas = document.getElementById("lista-metas");
-        const mensajeVacio = document.getElementById("mensaje-sin-metas");
 
         if (!form) return;
 
-        let contadorMetas = 0;
-
         form.addEventListener("submit", function (e) {
-            e.preventDefault();
+            const nombre = document.getElementById("nombre").value.trim();
+            const montoInicial = document.getElementById("monto_inicial").value;
+            const objetivo = document.getElementById("monto_objetivo").value;
+            const cuota = document.getElementById("cuota").value;
+            const fechaInicio = document.getElementById("fecha_inicio").value;
+            const fechaCumplimiento = document.getElementById("fecha_cumplimiento").value;
 
-            const nombre = document.getElementById("nombre-meta").value.trim();
-            const objetivo = document.getElementById("monto-objetivo").value;
-            const fecha = document.getElementById("fecha-estimada").value;
-
-            // Validaciones
             if (
                 nombre === "" ||
+                montoInicial === "" ||
                 objetivo === "" ||
                 Number(objetivo) <= 0 ||
-                fecha === ""
+                cuota === "" ||
+                Number(cuota) <= 0 ||
+                fechaInicio === "" ||
+                fechaCumplimiento === ""
             ) {
                 alert("Por favor complete todos los campos correctamente.");
+                e.preventDefault();
                 return;
             }
-
-            // Ocultar mensaje de vacío
-            if (mensajeVacio) {
-                mensajeVacio.style.display = "none";
-            }
-
-            // Crear ID único
-            const id = contadorMetas++;
-
-            // Crear tarjeta de meta
-            const meta = document.createElement("article");
-            meta.classList.add("tarjeta-meta");
-
-            meta.innerHTML = `
-                <div class="encabezado-meta">
-                    <h3>${nombre}</h3>
-                    <span class="fecha-meta">Meta: ${fecha}</span>
-                </div>
-
-                <div class="barra-progreso" role="progressbar"
-                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-
-                    <div class="progreso" style="width: 0%;"></div>
-                </div>
-
-                <p class="detalle-meta">
-                    <span id="ahorrado-${id}">₡0.00</span>
-                    ahorrados de
-                    <span id="objetivo-${id}">
-                        ₡${Number(objetivo).toLocaleString("es-CR")}
-                    </span>
-                </p>
-
-                <button class="btn-eliminar">Eliminar</button>
-            `;
-
-            listaMetas.appendChild(meta);
-
-            // Botón eliminar
-            meta.querySelector(".btn-eliminar").addEventListener("click", function () {
-                meta.remove();
-
-                // Si no quedan metas, mostrar mensaje
-                if (document.querySelectorAll(".tarjeta-meta").length === 0) {
-                    mensajeVacio.style.display = "block";
-                }
-            });
-
             alert("Meta de ahorro creada ");
-
-            form.reset();
         });
     });
     

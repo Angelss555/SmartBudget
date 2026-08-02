@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "../models/Gasto.php";
 require_once "../models/CategoriaGasto.php";
 
 if (!isset($_SESSION['usuario'])) {
@@ -9,6 +10,7 @@ if (!isset($_SESSION['usuario'])) {
 
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
 $categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
+$gastos = Gasto::obtenerPorUsuario($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +46,8 @@ $categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
             </ul>
         </nav>
 
-        <div class="usuario-sesion">
-            <span id="nombre-usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></span>
+        <div class="usuario_sesion">
+            <span id="nombre_usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></span>
             <a href="../../public/index.php" class="btn-salir">Cerrar sesión</a>
         </div>
     </header>
@@ -58,76 +60,56 @@ $categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
             <h2>Registrar nuevo gasto</h2>
 
             <!-- El "action" apunta al controlador PHP de gastos -->
-            <form id="form-gasto" method="POST" action="controllers/ExpenseController.php" novalidate>
+            <form id="form-gasto" method="POST" action="../controllers/ExpenseController.php" novalidate>
 
                 <div class="campo">
-                    <label for="nombre-gasto">Nombre del gasto</label>
-                    <input type="text" id="nombre-gasto" name="nombre" placeholder="Ej. Supermercado, Netflix" required>
+                    <label for="nombre">Nombre del gasto</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Supermercado, Netflix" required>
                 </div>
 
                 <div class="campo">
-                    <label for="monto-gasto">Monto</label>
-                    <input type="number" id="monto-gasto" name="monto" min="0" step="0.01" placeholder="0.00" required>
+                    <label for="monto">Monto</label>
+                    <input type="number" id="monto" name="monto" min="0" step="0.01" placeholder="0.00" required>
                 </div>
 
                 <div class="campo">
-                    <label for="categoria-gasto">Categoría</label>
-                    <select id="categoria-gasto" name="categoria" required>
+                    <label for="id_categoria">Categoría</label>
+                    <select id="id_categoria" name="id_categoria" required>
                         <option value="">Selecciona una categoría</option>
                         <?php while ($categoria = $categorias->fetch_assoc()): ?>
                             <option value="<?php echo (int) $categoria['id_categoria']; ?>">
                                 <?php echo htmlspecialchars($categoria['nombre']); ?>
                             </option>
                         <?php endwhile; ?>
-                        <option value="nueva">+ Crear categoría nueva</option>
-                    </select>
-                </div>
-
-                <div class="campo" id="campo-categoria-nueva" hidden>
-                    <label for="categoria-nueva">Nombre de la nueva categoría</label>
-                    <input type="text" id="categoria-nueva" name="categoria_nueva" placeholder="Ej. Mascotas">
-                </div>
-
-                <div class="campo">
-                    <label for="frecuencia-gasto">Frecuencia</label>
-                    <select id="frecuencia-gasto" name="frecuencia" required>
-                        <option value="diario">Diario</option>
-                        <option value="semanal">Semanal</option>
-                        <option value="mensual">Mensual</option>
-                        <option value="trimestral">Trimestral</option>
                     </select>
                 </div>
 
                 <div class="campo">
-                    <label for="fecha-gasto">Fecha</label>
-                    <input type="date" id="fecha-gasto" name="fecha" required>
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" name="fecha" required>
                 </div>
 
                 <div class="campo">
-                    <label for="descripcion-gasto">Descripción</label>
-                    <textarea id="descripcion-gasto" name="descripcion" placeholder="Detalle adicional (opcional)"></textarea>
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Detalle adicional (opcional)"></textarea>
                 </div>
 
-                <button type="submit" class="btn-primario">Guardar gasto</button>
+                <input type="hidden" name="id_estado" value="2">
+
+                <button type="submit" name="accion" value="crearGasto" class="btn-primario">Guardar gasto</button>
             </form>
         </section>
 
         <section class="tarjeta-tabla">
             <div class="encabezado-tabla">
-                <h2>Historial de gastos</h2>
+                    <h2>Listado de gastos</h2>
 
                 <div class="filtros">
-                    <label for="filtro-categoria">Categoría</label>
-                    <select id="filtro-categoria" name="filtro_categoria">
-                        <option value="todas">Todas</option>
-                        <?php
-                        $categoriasFiltro = CategoriaGasto::obtenerPorUsuario($id_usuario);
-                        while ($categoria = $categoriasFiltro->fetch_assoc()):
-                        ?>
-                            <option value="<?php echo (int) $categoria['id_categoria']; ?>">
-                                <?php echo htmlspecialchars($categoria['nombre']); ?>
-                            </option>
-                        <?php endwhile; ?>
+                    <label for="filtro-periodo">Periodo</label>
+                    <select id="filtro-periodo" name="periodo">
+                        <option value="mes-actual">Mes actual</option>
+                        <option value="ultimos-3">Últimos 3 meses</option>
+                        <option value="ultimos-6">Últimos 6 meses</option>
                     </select>
                 </div>
             </div>
@@ -138,16 +120,38 @@ $categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
                         <th>Fecha</th>
                         <th>Nombre</th>
                         <th>Categoría</th>
-                        <th>Frecuencia</th>
+                        <th>Descripción</th>
                         <th>Monto</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Las filas se llenarán dinámicamente desde la base de datos -->
-                    <tr class="fila-vacia">
-                        <td colspan="6">Todavía no hay gastos registrados.</td>
-                    </tr>
+                    <?php if ($gastos->num_rows === 0): ?>
+                        <tr class="fila-vacia">
+                            <td colspan="6">Todavía no hay gastos registrados.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php while ($gasto = $gastos->fetch_assoc()): ?>
+                            <tr>
+                                <td>
+                                    <?php
+                                        $fecha = new DateTime($gasto['fecha']);
+                                        echo $fecha->format('d/m/Y');
+                                    ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($gasto['nombre']); ?></td>
+                                <td><?php echo htmlspecialchars($gasto['categoria']); ?></td>
+                                <td><?php echo htmlspecialchars($gasto['descripcion'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td>₡<?php echo number_format((float) $gasto['monto'], 2); ?></td>
+                                <td>
+                                    <form method="POST" action="../controllers/ExpenseController.php">
+                                        <input type="hidden" name="id_gasto" value="<?php echo (int) $gasto['id_gasto']; ?>">
+                                        <button type="submit" name="accion" value="eliminarGasto" class="btn-eliminar">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </section>

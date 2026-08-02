@@ -47,12 +47,56 @@ class Gasto {
     public static function obtenerPorUsuario($id_usuario) {
         $db = Database::conectar();
 
-        $sql = "SELECT * FROM gastos WHERE id_usuario = ?";
+        $sql = "SELECT g.id_gasto, g.nombre, g.monto, g.fecha, g.descripcion, g.id_categoria, g.id_estado,
+                       cg.nombre AS categoria
+                FROM gastos g
+                INNER JOIN categorias_gasto cg
+                    ON cg.id_usuario = g.id_usuario
+                   AND cg.id_categoria = g.id_categoria
+                WHERE g.id_usuario = ?
+                ORDER BY g.fecha DESC, g.id_gasto DESC";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
 
         return $stmt->get_result();
+    }
+
+    public static function obtenerTotalesPorCategoria($id_usuario) {
+        $db = Database::conectar();
+
+        $sql = "SELECT cg.nombre AS categoria,
+                       COALESCE(SUM(g.monto), 0) AS total
+                FROM categorias_gasto cg
+                LEFT JOIN gastos g
+                    ON g.id_usuario = cg.id_usuario
+                   AND g.id_categoria = cg.id_categoria
+                   AND g.id_estado = 2
+                   AND YEAR(g.fecha) = YEAR(CURDATE())
+                   AND MONTH(g.fecha) = MONTH(CURDATE())
+                WHERE cg.id_usuario = ?
+                GROUP BY cg.id_categoria, cg.nombre
+                ORDER BY cg.nombre";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public static function obtenerTotalMesActual($id_usuario) {
+        $db = Database::conectar();
+        $sql = "SELECT COALESCE(SUM(monto), 0) AS total
+                FROM gastos
+                WHERE id_usuario = ?
+                  AND id_estado = 2
+                  AND YEAR(fecha) = YEAR(CURDATE())
+                  AND MONTH(fecha) = MONTH(CURDATE())";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+
+        return (float) $stmt->get_result()->fetch_assoc()['total'];
     }
 
     public static function eliminar($id_usuario, $id_gasto) {

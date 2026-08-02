@@ -1,50 +1,36 @@
 <?php
 session_start();
 require_once "../models/Gasto.php";
-require_once "../../config/database.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
     exit();
 }
-//Aprovechamos y obtenemos el id del usuario para ser usada en las diferentes funciones de Gasto.
-$id_usuario = $_SESSION['usuario']['id_usuario'];
+
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
 
 // ELIMINAR
-if (isset($_GET['delete'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'eliminarGasto') {
 
-    Gasto::eliminar($id_usuario, $_GET['delete']);
+    $id_gasto = (int) ($_POST['id_gasto'] ?? 0);
+
+    if ($id_gasto > 0) {
+        Gasto::eliminar($id_usuario, $id_gasto);
+    }
 
     header("Location: ../views/gastos.php");
     exit(); 
 }
 
-// ACTUALIZAR (PRIMERO)
-if (isset($_POST['actualizar'])) {
+// GUARDAR
+if (isset($_POST['accion']) && $_POST['accion'] === 'crearGasto') {
 
-    $id_gasto = $_POST['id_gasto'];
-    $nombre = $_POST['nombre'];
-    $monto = $_POST['monto'];
+    $nombre = trim($_POST['nombre']);
+    $monto = (float) $_POST['monto'];
     $fecha = $_POST['fecha'];
-    $descripcion = $_POST['descripcion'];
-    $id_categoria = $_POST['id_categoria'];
-    $id_estado = $_POST['id_estado'];
-
-    Gasto::actualizar($id_usuario, $id_gasto, $nombre, $monto, $fecha, $descripcion, $id_categoria, $id_estado);
-
-    header("Location: ../views/gastos.php");
-    exit();
-}
-
-// GUARDAR (SOLO SI NO ES ACTUALIZAR)
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['actualizar'])) {
-
-    $nombre = $_POST['nombre'];
-    $monto = $_POST['monto'];
-    $fecha = $_POST['fecha'];
-    $descripcion = $_POST['descripcion'];
-    $id_categoria = $_POST['id_categoria'];
-    $id_estado = $_POST['id_estado'];
+    $descripcion = trim($_POST['descripcion'] ?? '');
+    $id_categoria = (int) $_POST['id_categoria'];
+    $id_estado = (int) $_POST['id_estado'];
 
 
     Gasto::guardar($nombre, $monto, $fecha, $descripcion, $id_categoria, $id_usuario, $id_estado);

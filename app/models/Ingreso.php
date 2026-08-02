@@ -50,12 +50,40 @@ class Ingreso {
     public static function obtenerPorUsuario($id_usuario) {
         $db = Database::conectar();
 
-        $sql = "SELECT * FROM ingresos WHERE id_usuario = ?";
+        $sql = "SELECT
+                    i.id_ingreso,
+                    i.nombre,
+                    i.monto,
+                    i.fecha,
+                    i.descripcion,
+                    i.id_categoria,
+                    i.id_estado,
+                    ci.nombre AS categoria
+                FROM ingresos AS i
+                INNER JOIN categorias_ingreso AS ci ON i.id_usuario = ci.id_usuario AND i.id_categoria = ci.id_categoria
+                WHERE i.id_usuario = ?
+                ORDER BY i.fecha DESC, i.id_ingreso DESC";
+        
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
 
         return $stmt->get_result();
+    }
+
+    public static function obtenerTotalMesActual($id_usuario) {
+        $db = Database::conectar();
+        $sql = "SELECT COALESCE(SUM(monto), 0) AS total
+                FROM ingresos
+                WHERE id_usuario = ?
+                  AND id_estado = 2
+                  AND YEAR(fecha) = YEAR(CURDATE())
+                  AND MONTH(fecha) = MONTH(CURDATE())";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+
+        return (float) $stmt->get_result()->fetch_assoc()['total'];
     }
 
     public static function eliminar($id_usuario, $id_ingreso) {

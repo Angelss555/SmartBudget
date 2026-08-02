@@ -4,21 +4,21 @@ require_once "../../config/database.php";
 class Meta {
 
 
-    public static function actualizar($id_usuario, $id_meta, $nombre, $monto_actual, $monto_objetivo, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado) {
+    public static function actualizar($id_usuario, $id_meta, $nombre, $monto_inicial, $monto_objetivo, $cuota, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado) {
         $db = Database::conectar();
 
 
         $sql = "UPDATE metas_ahorro
-        SET nombre=?, monto_actual=?, monto_objetivo=?, fecha_inicio=?, fecha_cumplimiento=?, descripcion=?, id_estado=?
+        SET nombre=?, monto_inicial=?, monto_objetivo=?, cuota=?, fecha_inicio=?, fecha_cumplimiento=?, descripcion=?, id_estado=?
         WHERE id_usuario=? AND id_meta=?";
 
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("sddsssiii", $nombre, $monto_actual, $monto_objetivo, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado, $id_usuario, $id_meta);
+        $stmt->bind_param("sdddsssiii", $nombre, $monto_inicial, $monto_objetivo, $cuota, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado, $id_usuario, $id_meta);
 
         return $stmt->execute();
     }
 
-    public static function guardar($nombre, $monto_actual, $monto_objetivo, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_usuario,  $id_estado) {
+    public static function guardar($nombre, $monto_inicial, $monto_objetivo, $cuota, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_usuario,  $id_estado) {
         $db = Database::conectar();
 
         $db->begin_transaction();
@@ -34,11 +34,11 @@ class Meta {
             $id_meta = $stmtId->get_result()->fetch_assoc()['siguiente_id'];
 
             $sql = "INSERT INTO metas_ahorro
-                    (id_usuario, id_meta, nombre, monto_actual, monto_objetivo, fecha_inicio, fecha_cumplimiento, descripcion, id_estado)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (id_usuario, id_meta, nombre, monto_inicial, monto_objetivo, cuota, fecha_inicio, fecha_cumplimiento, descripcion, id_estado)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $db->prepare($sql);
-            $stmt->bind_param("iisddsssi", $id_usuario, $id_meta, $nombre, $monto_actual, $monto_objetivo, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado);
+            $stmt->bind_param("iisdddsssi", $id_usuario, $id_meta, $nombre, $monto_inicial, $monto_objetivo, $cuota, $fecha_inicio, $fecha_cumplimiento, $descripcion, $id_estado);
             $resultado = $stmt->execute();
 
             $db->commit();
@@ -58,6 +58,21 @@ class Meta {
         $stmt->execute();
 
         return $stmt->get_result();
+    }
+
+    public static function obtenerTotalCuotasMesActual($id_usuario) {
+        $db = Database::conectar();
+        $sql = "SELECT COALESCE(SUM(cuota), 0) AS total
+                FROM metas_ahorro
+                WHERE id_usuario = ?
+                  AND id_estado = 2
+                  AND fecha_inicio <= LAST_DAY(CURDATE())
+                  AND fecha_cumplimiento >= DATE_FORMAT(CURDATE(), '%Y-%m-01')";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+
+        return (float) $stmt->get_result()->fetch_assoc()['total'];
     }
 
     public static function eliminar($id_usuario, $id_meta) {

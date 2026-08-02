@@ -1,10 +1,14 @@
 <?php
 session_start();
+require_once "../models/Meta.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
     exit();
 }
+
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+$metas = Meta::obtenerPorUsuario($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -52,8 +56,7 @@ if (!isset($_SESSION['usuario'])) {
         <section class="tarjeta-formulario">
             <h2>Crear nueva meta</h2>
 
-            <!-- El "action" apunta al futuro controlador PHP de metas de ahorro -->
-            <form id="form-meta" method="POST" action="controllers/GoalController.php" novalidate>
+            <form id="form-meta" method="POST" action="../controllers/GoalController.php" novalidate>
 
                 <div class="campo">
                     <label for="nombre">Nombre de la meta</label>
@@ -61,13 +64,18 @@ if (!isset($_SESSION['usuario'])) {
                 </div>
 
                 <div class="campo">
-                    <label for="monto_actual">Monto actual</label>
-                    <input type="number" id="monto_actual" name="monto_actual" min="0" step="0.01" placeholder="0.00" required>
+                    <label for="monto_inicial">Monto inicial</label>
+                    <input type="number" id="monto_inicial" name="monto_inicial" min="0" step="0.01" placeholder="0.00" required>
                 </div>
 
                 <div class="campo">
                     <label for="monto_objetivo">Monto objetivo</label>
                     <input type="number" id="monto_objetivo" name="monto_objetivo" min="0" step="0.01" placeholder="0.00" required>
+                </div>
+
+                <div class="campo">
+                    <label for="cuota">Cuota</label>
+                    <input type="number" id="cuota" name="cuota" min="0.01" step="0.01" placeholder="0.00" required>
                 </div>
 
                 <div class="campo">
@@ -85,36 +93,68 @@ if (!isset($_SESSION['usuario'])) {
                     <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción de la meta..."></textarea>
                 </div>
 
-                <div class="campo">
-                    <label for="id_estado">Estado</label>
-                    <select id="id_estado" name="id_estado" required>
-                        <option value="1">inactivo</option>
-                        <option value="2">activo</option>
-                    </select>
-                </div>
+                <input type="hidden" name="id_estado" value="2">
 
-                <button type="submit" class="btn-primario">Crear meta</button>
+                <button type="submit" name="accion" value="crearMeta" class="btn-primario">Crear meta</button>
             </form>
         </section>
 
         <section class="lista-metas" id="lista-metas" aria-label="Metas de ahorro registradas">
             <h2>Mis metas</h2>
 
-            <!-- Ejemplo de tarjeta de meta; se generarán dinámicamente desde la base de datos -->
-            <article class="tarjeta-meta">
-                <div class="encabezado-meta">
-                    <h3>Fondo de emergencia</h3>
-                    <span class="fecha-meta">Meta: 30/12/2026</span>
-                </div>
+            <?php if ($metas->num_rows === 0): ?>
+                <p class="fila-vacia" id="mensaje-sin-metas">Todavía no has creado ninguna meta de ahorro.</p>
+            <?php else: ?>
+                <?php while ($meta = $metas->fetch_assoc()): ?>
+                    <?php
+                    $mesInicio = new DateTime($meta['fecha_inicio']);
+                    $mesInicio->modify('first day of this month');
+                    $mesActual = new DateTime('first day of this month');
+                    $mesesAhorrados = 0;
 
-                <div class="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progreso" style="width: 0%;"></div>
-                </div>
+                    if ($mesInicio <= $mesActual) {
+                        $diferencia = $mesInicio->diff($mesActual);
+                        $mesesAhorrados = ($diferencia->y * 12) + $diferencia->m + 1;
+                    }
 
-                <p class="detalle-meta"><span id="ahorrado-0">₡0.00</span> ahorrados de <span id="objetivo-0">₡0.00</span></p>
-            </article>
-
-            <p class="fila-vacia" id="mensaje-sin-metas">Todavía no has creado ninguna meta de ahorro.</p>
+                    $montoObjetivo = (float) $meta['monto_objetivo'];
+                    $montoActual = (float) $meta['monto_inicial']
+                        + ((float) $meta['cuota'] * $mesesAhorrados);
+                        
+                    $montoActualCumplido = min($montoActual, $montoObjetivo);
+                    $porcentaje = $montoObjetivo > 0
+                        ? min(($montoActualCumplido / $montoObjetivo) * 100, 100)
+                        : 0;
+                    ?>
+                    <article class="tarjeta-meta">
+                        <div class="cuerpo-meta">
+                            <div class="encabezado-meta">
+                                <h3>
+                                    <?php echo htmlspecialchars($meta['nombre']); ?>
+                                    - Cuota de ₡<?php echo number_format((float) $meta['cuota'], 2); ?>
+                                </h3>
+                                <span class="fecha-meta">Meta: <?php echo (new DateTime($meta['fecha_cumplimiento']))->format('d/m/Y'); ?></span>
+                            </div>
+                            <p class="descripcion-meta"><?php echo htmlspecialchars($meta['descripcion'] ?? ''); ?></p>
+                            <div class="barra-progreso" role="progressbar" aria-valuenow="<?php echo round($porcentaje); ?>" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progreso" style="width: <?php echo $porcentaje; ?>%;"></div>
+                            </div>
+                            <div class="meta-acciones">
+                                <p class="detalle-meta">
+                                    <span>₡<?php echo number_format($montoActual, 2); ?></span> ahorrados de
+                                    <span>₡<?php echo number_format($montoObjetivo, 2); ?></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accion-meta">
+                            <form method="POST" action="../controllers/GoalController.php" class="meta-form-eliminar">
+                                <input type="hidden" name="id_meta" value="<?php echo (int) $meta['id_meta']; ?>">
+                                <button type="submit" name="accion" value="eliminarMeta" class="btn-eliminar">Eliminar</button>
+                            </form>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            <?php endif; ?>
         </section>
 
     </main>
