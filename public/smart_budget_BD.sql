@@ -501,26 +501,26 @@ VALUES
 
 INSERT INTO metas_ahorro(id_usuario, id_meta, nombre, monto_inicial, monto_objetivo, cuota, fecha_inicio, fecha_cumplimiento, descripcion, id_estado)
 VALUES
-(1, 1, 'Viaje a Costa Rica', 250000.00, 1500000.00, 50000.00, '2025-06-01', '2026-12-31', 'Ubicación: Cuenta del Banco Nacional', 2),
-(1, 2, 'Fondo para vehículo', 180000.00, 1200000.00, 40000.00, '2025-07-01', '2026-10-31', 'Ubicación: cuenta del Banco Popular', 2),
-(1, 3, 'Hogar propio', 420000.00, 3000000.00, 75000.00, '2025-02-01', '2027-12-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
-(1, 4, 'Vacaciones familiares', 900000.00, 600000.00, 30000.00, '2025-08-15', '2026-11-30', 'Ubicación: Pensión Complementaria en Banco Popular', 2),
-(2, 1, 'Fondo de emergencia', 500000.00, 2000000.00, 60000.00, '2025-01-01', '2026-06-30', 'Ubicación: Cuenta del Banco Nacional', 2),
-(2, 2, 'Universidad de los hijos', 300000.00, 1800000.00, 50000.00, '2025-04-01', '2027-07-31', 'Ubicación: cuenta del Banco Popular', 2),
-(2, 3, 'Renovación de electrodomésticos', 75000.00, 700000.00, 25000.00, '2025-10-01', '2026-08-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
-(2, 4, 'Viaje de aniversario', 120000.00, 500000.00, 30000.00, '2025-05-10', '2026-12-15', 'Ubicación: Pensión Complementaria en Banco Popular', 2),
-(3, 1, 'Compra de laptop', 800000.00, 2500000.00, 60000.00, '2025-03-15', '2026-09-30', 'Ubicación: Cuenta del Banco Nacional', 2),
-(3, 2, 'Equipo de trabajo', 250000.00, 1200000.00, 40000.00, '2025-06-20', '2026-09-30', 'Ubicación: cuenta del Banco Popular', 2),
-(3, 3, 'Curso avanzado', 60000.00, 400000.00, 20000.00, '2025-03-05', '2026-10-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
-(3, 4, 'Fondo de inversión', 500000.00, 2500000.00, 50000.00, '2025-01-15', '2027-03-31', 'Ubicación: Pensión Complementaria en Banco Popular', 2),
-(4, 1, 'Educación continua', 150000.00, 1000000.00, 35000.00, '2025-09-01', '2027-06-30', 'Ubicación: Cuenta del Banco Nacional', 2),
-(4, 2, 'Emergencias médicas', 200000.00, 1000000.00, 30000.00, '2025-08-01', '2026-12-31', 'Ubicación: cuenta del Banco Popular', 2),
-(4, 3, 'Viaje internacional', 350000.00, 2500000.00, 45000.00, '2025-09-10', '2027-08-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
-(4, 4, 'Automóvil nuevo', 700000.00, 4000000.00, 60000.00, '2025-04-20', '2028-01-31', 'Ubicación: Pensión Complementaria en Banco Popular', 2),
-(5, 1, 'Ahorro a largo plazo', 1200000.00, 5000000.00, 50000.00, '2024-01-01', '2028-12-31', 'Ubicación: Cuenta del Banco Nacional', 2),
-(5, 2, 'Fondo para negocio', 450000.00, 3000000.00, 40000.00, '2025-02-01', '2027-06-30', 'Ubicación: cuenta del Banco Popular', 2),
-(5, 3, 'Equipo de oficina', 160000.00, 900000.00, 25000.00, '2025-07-10', '2026-10-15', 'Ubicación: sobre del Banco de Costa Rica', 2),
-(5, 4, 'Reserva de retiro', 900000.00, 6000000.00, 60000.00, '2024-11-01', '2028-12-31', 'Ubicación: Pensión Complementaria en Banco Popular', 2);
+(1, 1, 'Viaje a Costa Rica', 50000.00, 1500000.00, 50000.00, '2025-06-01', '2027-11-30', 'Ubicación: Cuenta del Banco Nacional', 2),
+(1, 2, 'Fondo para vehículo', 40000.00, 1200000.00, 40000.00, '2025-07-01', '2027-12-31', 'Ubicación: cuenta del Banco Popular', 2),
+(1, 3, 'Hogar propio', 75000.00, 3000000.00, 75000.00, '2025-02-01', '2028-05-31', 'Ubicación: Cuenta de ahorro para vivienda en Banco de Costa Rica', 2),
+(1, 4, 'Vacaciones familiares', 30000.00, 600000.00, 30000.00, '2025-08-15', '2027-03-31', 'Ubicación: Cuenta de ahorro para vacaciones en Banco Popular', 2),
+(2, 1, 'Fondo de emergencia', 60000.00, 2000000.00, 60000.00, '2025-01-01', '2027-10-31', 'Ubicación: Cuenta del Banco Nacional', 2),
+(2, 2, 'Universidad de los hijos', 50000.00, 1800000.00, 50000.00, '2025-04-01', '2028-03-31', 'Ubicación: cuenta del Banco Popular', 2),
+(2, 3, 'Renovación de electrodomésticos', 25000.00, 700000.00, 25000.00, '2025-10-01', '2028-01-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
+(2, 4, 'Viaje de aniversario', 30000.00, 500000.00, 30000.00, '2025-05-10', '2026-12-15', 'Ubicación: Cuenta de ahorro para viajes en Banco Popular', 2),
+(3, 1, 'Compra de laptop', 60000.00, 2500000.00, 60000.00, '2025-03-15', '2028-08-31', 'Ubicación: Cuenta del Banco Nacional', 2),
+(3, 2, 'Equipo de trabajo', 40000.00, 1200000.00, 40000.00, '2025-06-20', '2027-11-30', 'Ubicación: cuenta del Banco Popular', 2),
+(3, 3, 'Curso avanzado', 20000.00, 400000.00, 20000.00, '2025-03-05', '2026-10-31', 'Ubicación: sobre del Banco de Costa Rica', 2),
+(3, 4, 'Fondo de inversión', 50000.00, 2500000.00, 50000.00, '2025-01-15', '2029-02-28', 'Ubicación: Pensión Complementaria en Banco Popular', 2),
+(4, 1, 'Educación continua', 35000.00, 1000000.00, 35000.00, '2025-09-01', '2028-01-31', 'Ubicación: Cuenta del Banco Nacional', 2),
+(4, 2, 'Emergencias médicas', 30000.00, 1000000.00, 30000.00, '2025-08-01', '2028-05-31', 'Ubicación: cuenta del Banco Popular', 2),
+(4, 3, 'Viaje internacional', 45000.00, 2500000.00, 45000.00, '2025-09-10', '2030-04-30', 'Ubicación: sobre del Banco de Costa Rica', 2),
+(4, 4, 'Automóvil nuevo', 60000.00, 4000000.00, 60000.00, '2025-04-20', '2030-10-31', 'Ubicación: Cuenta de ahorro para vehículo en Banco Popular', 2),
+(5, 1, 'Ahorro a largo plazo', 50000.00, 5000000.00, 50000.00, '2024-01-01', '2032-04-30', 'Ubicación: Cuenta del Banco Nacional', 2),
+(5, 2, 'Fondo para negocio', 40000.00, 3000000.00, 40000.00, '2025-02-01', '2031-04-30', 'Ubicación: cuenta del Banco Popular', 2),
+(5, 3, 'Equipo de oficina', 25000.00, 900000.00, 25000.00, '2025-07-10', '2028-06-30', 'Ubicación: sobre del Banco de Costa Rica', 2),
+(5, 4, 'Reserva de retiro', 60000.00, 6000000.00, 60000.00, '2024-11-01', '2033-02-28', 'Ubicación: Pensión Complementaria en Banco Popular', 2);
 
 
 INSERT INTO tipos_notificacion(nombre, id_estado) VALUES
