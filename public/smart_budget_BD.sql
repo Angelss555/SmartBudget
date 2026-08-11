@@ -78,9 +78,9 @@ CREATE TABLE categorias_gasto(
 CREATE TABLE gastos(
     id_usuario INT NOT NULL,
     id_gasto INT NOT NULL,
-    nombre VARCHAR(100),
-    monto DECIMAL(12,2),
-    fecha DATE,
+    nombre VARCHAR(100) NOT NULL,
+    monto DECIMAL(12,2) NOT NULL,
+    fecha DATE NOT NULL,
     descripcion TEXT,
     id_categoria INT,
     id_estado INT,
@@ -188,7 +188,7 @@ INSERT INTO estados (nombre) VALUES
 -- Creación de 5 usuarios de prueba
 INSERT INTO usuarios(nombre, primer_apellido, segundo_apellido, email, password, id_estado)
 VALUES
-('Admin', 'PrimerApellido', 'SegundoApellido', 'admin@smartbudget.com', '$2y$10$UlaJNZHxopZWGLaZsIvK7u7OEoXbX6GEKbu9w.iYEkusCFeznAAHG', 2),
+('Admin', 'PrimerApellido', 'SegundoApellido', 'admin@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Donovan', 'Aguilar', 'Cárdenas', 'donovan@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Jenny', 'Liang', 'Jiang', 'jenny@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Ángel', 'Rodríguez', 'Vargas', 'angel@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
@@ -386,6 +386,9 @@ VALUES
 (1, 22, 'Supermercado agosto 2026', 56750.00, '2026-08-05', 'Compra mensual de alimentos de agosto', 1, 2),
 (1, 23, 'Transporte agosto 2026', 19583.00, '2026-08-12', 'Gastos mensuales de transporte de agosto', 2, 2),
 (1, 24, 'Servicios básicos agosto 2026', 44375.00, '2026-08-20', 'Pago de servicios básicos de agosto', 10, 2),
+(1, 25, 'Reparación de vehículo marzo 2026', 65000.00, '2026-03-25', 'Reparación extraordinaria del vehículo', 2, 2),
+(1, 26, 'Compra de electrodoméstico mayo 2026', 85000.00, '2026-05-25', 'Compra extraordinaria para el hogar', 11, 2),
+(1, 27, 'Actividad recreativa julio 2026', 40000.00, '2026-07-25', 'Salida recreativa familiar', 5, 2),
 (2, 1, 'Pasajes transporte', 15000.00, '2026-01-10', 'Gastos en bus', 2, 2),
 (2, 2, 'Compra de supermercado', 43000.00, '2026-07-26', 'Compra de alimentos', 1, 2),
 (2, 3, 'Almuerzo familiar', 15500.00, '2026-08-01', 'Almuerzo fuera de casa', 1, 2),

@@ -71,6 +71,29 @@ class Ingreso {
         return $stmt->get_result();
     }
 
+    public static function obtenerTotalesUltimosSeisMeses($id_usuario) {
+        $db = Database::conectar();
+
+        $sql = "SELECT
+                    YEAR(fecha) AS anio,
+                    MONTH(fecha) AS numero_mes,
+                    DATE_FORMAT(fecha, '%Y-%m') AS mes_anio,
+                    COALESCE(SUM(monto), 0) AS total
+                FROM ingresos
+                WHERE id_usuario = ?
+                  AND id_estado = 2
+                  AND fecha >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
+                  AND fecha < DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)
+                GROUP BY YEAR(fecha), MONTH(fecha), DATE_FORMAT(fecha, '%Y-%m')
+                ORDER BY anio ASC, numero_mes ASC";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
     public static function obtenerTotalMesActual($id_usuario) {
         $db = Database::conectar();
         $sql = "SELECT COALESCE(SUM(monto), 0) AS total

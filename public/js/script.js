@@ -38,14 +38,45 @@
  *  ===================================================
 */
     document.addEventListener("DOMContentLoaded", function () {
-
+        // Gráfico de gastos por categoría
         const graficoCategorias = document.getElementById("grafico-categorias");
         const gastosCategoriaData = document.getElementById("gastos-categoria-data");
-        const gastosPorCategoria = gastosCategoriaData
+        const gastosPorCategoriaArregloJavaScript = gastosCategoriaData
             ? JSON.parse(gastosCategoriaData.textContent)
             : [];
-        const categoriasGasto = gastosPorCategoria.map(dato => dato.categoria);
-        const montosGasto = gastosPorCategoria.map(dato => dato.total);
+        const categoriasGasto = gastosPorCategoriaArregloJavaScript.map(dato => dato.categoria);
+        const montosGasto = gastosPorCategoriaArregloJavaScript.map(dato => dato.total);
+
+        // Gráfico de ingresos y gastos últimos 6 meses
+        const graficoSeisMeses = document.getElementById("grafico-seis-meses");
+
+        //Datos de ingresos
+        const ingresosSeisMesesData = document.getElementById("ingresos-seis-meses-data");//Obtiene el elemento del DOM que contiene los datos en formato JSON
+        const ingresoSeisMesesArregloJavaScript = ingresosSeisMesesData//Convierte los datos JSON en un arreglo de JavaScript
+            ? JSON.parse(ingresosSeisMesesData.textContent)
+            : [];
+        const mesesIngreso = ingresoSeisMesesArregloJavaScript.map(dato => dato.mes);
+        const montosIngresoSeisMeses = ingresoSeisMesesArregloJavaScript.map(dato => dato.total);
+
+        //Datos de gastos
+        const gastosSeisMesesData = document.getElementById("gastos-seis-meses-data");//Obtiene el elemento del DOM que contiene los datos en formato JSON
+        const gastosSeisMesesArregloJavaScript = gastosSeisMesesData//Convierte los datos JSON en un arreglo de JavaScript
+            ? JSON.parse(gastosSeisMesesData.textContent)
+            : [];
+        const mesesGasto = gastosSeisMesesArregloJavaScript.map(dato => dato.mes);
+        const montosGastoSeisMeses = gastosSeisMesesArregloJavaScript.map(dato => dato.total);
+
+        //Datos de metas
+        const metasSeisMesesData = document.getElementById("metas-seis-meses-data");//Obtiene el elemento del DOM que contiene los datos en formato JSON
+        const metasSeisMesesArregloJavaScript = metasSeisMesesData//Convierte los datos JSON en un arreglo de JavaScript
+            ? JSON.parse(metasSeisMesesData.textContent)
+            : [];
+        const mesesMetas = metasSeisMesesArregloJavaScript.map(dato => dato.mes);
+        const montosMetasSeisMeses = metasSeisMesesArregloJavaScript.map(dato => dato.total);
+
+
+        const montosDineroComprometido = montosGastoSeisMeses.map((gasto, indice) => gasto + (montosMetasSeisMeses[indice] || 0));
+
 
         new Chart(graficoCategorias, {
             type: "bar",
@@ -66,6 +97,7 @@
             options: {
                 indexAxis: "y",
                 responsive: true,
+                maintainAspectRatio: false,
 
                 plugins: {
                     legend: {
@@ -96,8 +128,76 @@
                 }
             }
         });
+        new Chart(graficoSeisMeses, {
+            type: "line",
 
+            data: {
+                labels: mesesIngreso,
+                datasets: [{
+                    label: "Ingresos",
+                    data: montosIngresoSeisMeses,
+                    borderColor: "#10b981",
+                    backgroundColor: "#10b981",
+                    fill: false
+                }, {
+                    label: "Gastos",
+                    data: montosGastoSeisMeses,
+                    borderColor: "#ef4444",
+                    backgroundColor: "#ef4444",
+                    fill: false
+                }, {
+                    label: "Metas",
+                    data: montosMetasSeisMeses,
+                    borderColor: "#8b5cf6",
+                    backgroundColor: "#8b5cf6",
+                    fill: false
+                }, {
+                    label: "Dinero comprometido (Gastos + Metas)",
+                    data: montosDineroComprometido,
+                    borderColor: "#f59e0b",
+                    backgroundColor: "#f59e0b",
+                    fill: false
+                }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.dataset.label +
+                                    ": ₡" +
+                                    context.raw.toLocaleString("es-CR");
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            callback: function (valor) {
+                                return "₡" +
+                                    valor.toLocaleString("es-CR");
+                            }
+                        }
+                    }
+                }
+            }
+        });
     });
+
+
 
     window.addEventListener('load', function () {
         const toast = document.getElementById('loginToast');

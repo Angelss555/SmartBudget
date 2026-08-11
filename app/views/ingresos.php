@@ -13,6 +13,7 @@ $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
 $categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
 $ingresos = Ingreso::obtenerPorUsuario($id_usuario);
 
+
 ?>
 
 <!DOCTYPE html>

@@ -31,17 +31,85 @@ $meses = [
 ];
 $mesActual = $meses[(int) date('n')];
 $resultadoGastosCategoria = Gasto::obtenerTotalesPorCategoria($id_usuario);
-$datosGastosCategoria = [];
+$arregloGastosCategoria = [];
 
-while ($dato = $resultadoGastosCategoria->fetch_assoc()) {
-    $datosGastosCategoria[] = [
-        'categoria' => $dato['categoria'],
-        'total' => (float) $dato['total']
+while ($fila = $resultadoGastosCategoria->fetch_assoc()) {
+    $arregloGastosCategoria[] = [
+        'categoria' => $fila['categoria'],
+        'total' => (float) $fila['total']
     ];
 }
+//Obtener los resutados en formatos mysqli_result
+$resultadosGastosSeisMeses = Gasto::obtenerTotalesUltimosSeisMeses($id_usuario);
+$resultadosIngresosSeisMeses = Ingreso::obtenerTotalesUltimosSeisMeses($id_usuario);
+$resultadoMetas = Meta::obtenerPorUsuario($id_usuario);
+
+
+// Obtener los totales de gastos de los últimos 6 meses
+$totalesGastosPorMes = [];
+while ($fila = $resultadosGastosSeisMeses->fetch_assoc()) {
+    $totalesGastosPorMes[$fila['mes_anio']] = (float) $fila['total'];
+}
+//Obtener los totales de ingresos de los últimos 6 meses
+$totalesIngresosPorMes = [];
+while ($fila = $resultadosIngresosSeisMeses->fetch_assoc()) {
+    $totalesIngresosPorMes[$fila['mes_anio']] = (float) $fila['total'];
+}
+
+$metas = []; //Lista de metas del usuario
+while ($fila = $resultadoMetas->fetch_assoc()) {
+    $metas[] =  $fila;
+}
+
+
+
+//Arreglo de 6 meses completos, incluyendo los meses sin datos.
+$arregloGastosSeisMeses = [];
+$arregloIngresosSeisMeses = [];
+$arregloMetasSeisMeses = [];
+
+$fecha = new DateTime('first day of this month');
+$fecha->modify('-5 months');
+
+// Crear exactamente seis meses
+for ($i = 0; $i < 6; $i++) {
+    $mes = $fecha->format('Y-m');
+    $inicioMes = $fecha->format('Y-m-01');
+    $finMes = $fecha->format('Y-m-t');
+
+    $totalMetasMes = 0;
+
+    foreach ($metas as $meta) {
+        $metaActivaDuranteMes = 
+            (int) $meta['id_estado'] === 2 &&
+            $meta['fecha_inicio'] <= $finMes &&
+            $meta['fecha_cumplimiento'] >= $inicioMes;
+
+        if ($metaActivaDuranteMes) {
+            $totalMetasMes += (float) $meta['cuota'];
+        }
+    }
+
+    $arregloIngresosSeisMeses[] = [
+        'mes' => $mes,
+        'total' => $totalesIngresosPorMes[$mes] ?? 0
+    ];
+
+    $arregloGastosSeisMeses[] = [
+        'mes' => $mes,
+        'total' => $totalesGastosPorMes[$mes] ?? 0
+    ];
+
+    $arregloMetasSeisMeses[] = [
+        'mes' => $mes,
+        'total' => $totalMetasMes
+    ];
+
+    $fecha->modify('+1 month');
+}
+
 
 ?>
-
 <!DOCTYPE html>
 <!--
   Proyecto: SmartBudget
@@ -125,10 +193,10 @@ while ($dato = $resultadoGastosCategoria->fetch_assoc()) {
             </div>
 
             <div class="tarjeta-grafico">
-                <div class="tarjeta-ingreso-gastos">
-                    <h2>Ingresos vs. gastos (últimos 6 meses)</h2>
-                    <div class="grafico-ingreso-gastos-contenedor">
-                        <canvas id="grafico-tendencia" aria-label="Gráfico de tendencia mensual"></canvas>
+                <div class="tarjeta-ingreso-gastos-metas-comprometido">
+                    <h2>Ingresos vs. gastos vs. metas vs. dinero comprometido (últimos 6 meses)</h2>
+                    <div class="grafico-ingreso-gastos-metas-comprometido-contenedor">
+                        <canvas id="grafico-seis-meses" aria-label="Gráfico de ingresos, gastos, metas y dinero comprometido"></canvas>
                     </div>
                 </div>
             </div>
@@ -180,7 +248,16 @@ while ($dato = $resultadoGastosCategoria->fetch_assoc()) {
     <?php endif; ?>
 
     <script id="gastos-categoria-data" type="application/json"><?php
-        echo json_encode($datosGastosCategoria, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+        echo json_encode($arregloGastosCategoria, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+    ?></script>
+    <script id="ingresos-seis-meses-data" type="application/json"><?php
+        echo json_encode($arregloIngresosSeisMeses, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+    ?></script>
+    <script id="gastos-seis-meses-data" type="application/json"><?php
+        echo json_encode($arregloGastosSeisMeses, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+    ?></script>
+    <script id="metas-seis-meses-data" type="application/json"><?php
+        echo json_encode($arregloMetasSeisMeses, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
     ?></script>
     <script src="../../public/js/script.js"></script>
 </body>

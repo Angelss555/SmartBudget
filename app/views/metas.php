@@ -133,7 +133,10 @@ $metas = Meta::obtenerPorUsuario($id_usuario);
                                     <?php echo htmlspecialchars($meta['nombre']); ?>
                                     - Cuota de ₡<?php echo number_format((float) $meta['cuota'], 2); ?>
                                 </h3>
-                                <span class="fecha-meta">Meta: <?php echo (new DateTime($meta['fecha_cumplimiento']))->format('d/m/Y'); ?></span>
+                                <div class="fechas-meta">
+                                    <span class="fecha-meta">Fecha inicial: <?php echo (new DateTime($meta['fecha_inicio']))->format('d/m/Y'); ?></span>
+                                    <span class="fecha-meta">Fecha objetivo: <?php echo (new DateTime($meta['fecha_cumplimiento']))->format('d/m/Y'); ?></span>
+                                </div>
                             </div>
                             <p class="descripcion-meta"><?php echo htmlspecialchars($meta['descripcion'] ?? ''); ?></p>
                             <div class="barra-progreso" role="progressbar" aria-valuenow="<?php echo round($porcentaje); ?>" aria-valuemin="0" aria-valuemax="100">

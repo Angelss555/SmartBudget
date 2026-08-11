@@ -380,17 +380,21 @@ body {
     margin-bottom: 20px;
 }
 
-.tarjeta-gasto-categoria {
+.tarjeta-gasto-categoria, .tarjeta-ingreso-gastos-metas-comprometido {
     display: flex;
     flex-direction: column;
+    width: 100%;
     height: 100%;
 }
 
-.grafico-categoria-contenedor {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+
+.grafico-categoria-contenedor,
+.grafico-ingreso-gastos-metas-comprometido-contenedor {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
 }
 
 .metas-circulares-grid {
@@ -508,6 +512,13 @@ body {
 .encabezado-meta h3 {
     color: #0e4f4a;
     font-size: 18px;
+}
+
+.fechas-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .fecha-meta {
