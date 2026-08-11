@@ -75,6 +75,7 @@ class Gasto {
                   AND id_estado = 2
                   AND fecha >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
                   AND fecha < DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)
+                GROUP BY YEAR(fecha), MONTH(fecha), DATE_FORMAT(fecha, '%Y-%m')
                 ORDER BY anio ASC, numero_mes ASC";
 
         $stmt = $db->prepare($sql);
