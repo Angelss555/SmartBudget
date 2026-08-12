@@ -50,8 +50,8 @@ body {
 }
 
 .icon-small {
-    width: 45px;
-    height: 45px;
+    width: 52px;
+    height: 52px;
     object-fit: contain;
     margin: 0;
     margin-left: 15px;
@@ -776,8 +776,9 @@ body {
 }
 
 .auth-header .logo {
-    width: 450px;
-    height: 150px;
+    width: 520px;
+    max-width: 100%;
+    height: auto;
     object-fit: contain;
     margin-bottom: 5px;
 }

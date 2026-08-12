@@ -28,11 +28,6 @@
             <form id="form-registro" method="POST" action="../controllers/AuthController.php" novalidate>
 
                 <div class="campo">
-                    <label for="usuario">Nombre de usuario</label>
-                    <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario único" required>
-                </div>
-
-                <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Primer nombre" required>
                 </div>

@@ -86,4 +86,18 @@ class ConfiguracionNotificaciones {
 
         return $stmt->execute();
     }
+
+    public static function guardarOActualizar($id_usuario, $id_tipo, $notificacion_app, $notificacion_correo, $id_estado = 2) {
+        $db = Database::conectar();
+        $sql = "INSERT INTO configuraciones_notificaciones(id_usuario, id_tipo, notificacion_app, notificacion_correo, id_estado)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    notificacion_app = VALUES(notificacion_app),
+                    notificacion_correo = VALUES(notificacion_correo),
+                    id_estado = VALUES(id_estado)";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("iiiii", $id_usuario, $id_tipo, $notificacion_app, $notificacion_correo, $id_estado);
+
+        return $stmt->execute();
+    }
 }

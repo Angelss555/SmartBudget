@@ -24,7 +24,7 @@ if (!isset($_SESSION['usuario'])) {
 
     <header class="topbar">
         <div class="marca">  
-            <img src="../../public/img/icon.png" alt="Icono de Smartbudget"  class="icon-small">
+            <img src="../../public/img/icon.png" alt="Icono de Smartbudget" class="icon-small">
             <span>SmartBudget</span>
         </div>
 
@@ -50,24 +50,33 @@ if (!isset($_SESSION['usuario'])) {
         <h1>Configuración</h1>
 
         <section class="tarjeta-formulario">
-            <h2>Notificaciones por correo</h2>
+            <h2>Notificaciones</h2>
 
-            <!-- El "action" apunta al futuro controlador PHP de configuración -->
-            <form id="form-notificaciones" method="POST" action="controllers/ConfigurationController.php">
+            <form id="form-notificaciones" method="POST" action="../controllers/ConfigurationController.php">
+                <input type="hidden" name="guardar_configuracion" value="1">
 
                 <div class="campo campo-switch">
-                    <label for="notif-reporte">Reporte financiero mensual</label>
-                    <input type="checkbox" id="notif-reporte" name="notif_reporte">
+                    <label for="reporte-app">Reporte financiero mensual</label>
+                    <div>
+                        <label><input type="checkbox" id="reporte-app" name="reporte_app" value="1" checked> App</label>
+                        <label><input type="checkbox" id="reporte-correo" name="reporte_correo" value="1" checked> Correo</label>
+                    </div>
                 </div>
 
                 <div class="campo campo-switch">
-                    <label for="notif-pagos">Alertas de próximos pagos</label>
-                    <input type="checkbox" id="notif-pagos" name="notif_pagos">
+                    <label for="pagos-app">Alertas de próximos pagos</label>
+                    <div>
+                        <label><input type="checkbox" id="pagos-app" name="pagos_app" value="1" checked> App</label>
+                        <label><input type="checkbox" id="pagos-correo" name="pagos_correo" value="1" checked> Correo</label>
+                    </div>
                 </div>
 
                 <div class="campo campo-switch">
-                    <label for="notif-exceso">Aviso al sobrepasar el monto máximo de una categoría</label>
-                    <input type="checkbox" id="notif-exceso" name="notif_exceso">
+                    <label for="exceso-app">Aviso al sobrepasar el monto máximo de una categoría</label>
+                    <div>
+                        <label><input type="checkbox" id="exceso-app" name="exceso_app" value="1" checked> App</label>
+                        <label><input type="checkbox" id="exceso-correo" name="exceso_correo" value="1" checked> Correo</label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-primario">Guardar cambios</button>
@@ -77,16 +86,17 @@ if (!isset($_SESSION['usuario'])) {
         <section class="tarjeta-formulario">
             <h2>Datos de la cuenta</h2>
 
-            <form id="form-perfil" method="POST" action="controllers/ConfigurationController.php">
+            <form id="form-perfil" method="POST" action="../controllers/ConfigurationController.php">
+                <input type="hidden" name="guardar_perfil" value="1">
 
                 <div class="campo">
                     <label for="nombre-perfil">Nombre completo</label>
-                    <input type="text" id="nombre-perfil" name="nombre">
+                    <input type="text" id="nombre-perfil" name="nombre" value="<?php echo htmlspecialchars($_SESSION['usuario']['nombre'] ?? ''); ?>">
                 </div>
 
                 <div class="campo">
                     <label for="email-perfil">Correo electrónico</label>
-                    <input type="email" id="email-perfil" name="email">
+                    <input type="email" id="email-perfil" name="email" value="<?php echo htmlspecialchars($_SESSION['usuario']['email'] ?? ''); ?>">
                 </div>
 
                 <button type="submit" class="btn-secundario">Actualizar datos</button>

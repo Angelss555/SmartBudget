@@ -26,7 +26,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(50),
     primer_apellido VARCHAR(50),
     segundo_apellido VARCHAR(50),
-    email VARCHAR(100) UNIQUE,
+    email VARCHAR(100),
     password VARCHAR(255),
     id_estado INT DEFAULT 2,
     CONSTRAINT usuarios_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)

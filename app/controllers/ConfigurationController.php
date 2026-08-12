@@ -9,6 +9,42 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+
+if (isset($_POST['guardar_perfil'])) {
+    $nombre = trim($_POST['nombre'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+    if ($nombre !== '' && $email !== '') {
+        Usuario::actualizarPerfil($id_usuario, $nombre, $email);
+        $_SESSION['usuario']['nombre'] = $nombre;
+        $_SESSION['usuario']['email'] = $email;
+    }
+
+    header("Location: ../views/configuracion.php");
+    exit();
+}
+
+if (isset($_POST['guardar_configuracion'])) {
+    $tipos = [
+        'reporte' => 4,
+        'pagos' => 1,
+        'exceso' => 3
+    ];
+
+    foreach ($tipos as $clave => $id_tipo) {
+        $appKey = $clave . '_app';
+        $correoKey = $clave . '_correo';
+        $notificacion_app = isset($_POST[$appKey]) ? 1 : 0;
+        $notificacion_correo = isset($_POST[$correoKey]) ? 1 : 0;
+
+        ConfiguracionNotificaciones::guardarOActualizar($id_usuario, $id_tipo, $notificacion_app, $notificacion_correo, 2);
+    }
+
+    header("Location: ../views/configuracion.php");
+    exit();
+}
+
 // ELIMINAR
 if (isset($_GET['delete'])) {
 

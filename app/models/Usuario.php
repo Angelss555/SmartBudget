@@ -74,4 +74,14 @@ class Usuario {
 
         return $stmt->execute();
     }
+
+    public static function actualizarPerfil($id_usuario, $nombre, $email) {
+        $db = Database::conectar();
+
+        $sql = "UPDATE usuarios SET nombre = ?, email = ? WHERE id_usuario = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("ssi", $nombre, $email, $id_usuario);
+
+        return $stmt->execute();
+    }
 }
