@@ -122,6 +122,28 @@ class Gasto {
         return (float) $stmt->get_result()->fetch_assoc()['total'];
     }
 
+    public static function obtenerPorPeriodo($id_usuario, $fechaInicio, $fechaFin, $id_categoria = null) {
+        $db = Database::conectar();
+        $sql = "SELECT g.fecha, g.nombre, g.descripcion, g.monto, cg.nombre AS categoria
+                FROM gastos g
+                INNER JOIN categorias_gasto cg
+                    ON cg.id_usuario = g.id_usuario AND cg.id_categoria = g.id_categoria
+                WHERE g.id_usuario = ? AND g.id_estado = 2
+                  AND g.fecha BETWEEN ? AND ?";
+        if ($id_categoria !== null) {
+            $sql .= " AND g.id_categoria = ?";
+        }
+        $sql .= " ORDER BY g.fecha DESC, g.id_gasto DESC";
+        $stmt = $db->prepare($sql);
+        if ($id_categoria !== null) {
+            $stmt->bind_param("issi", $id_usuario, $fechaInicio, $fechaFin, $id_categoria);
+        } else {
+            $stmt->bind_param("iss", $id_usuario, $fechaInicio, $fechaFin);
+        }
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
     public static function eliminar($id_usuario, $id_gasto) {
         $db = Database::conectar();
 

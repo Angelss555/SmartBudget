@@ -109,6 +109,21 @@ class Ingreso {
         return (float) $stmt->get_result()->fetch_assoc()['total'];
     }
 
+    public static function obtenerPorPeriodo($id_usuario, $fechaInicio, $fechaFin) {
+        $db = Database::conectar();
+        $sql = "SELECT i.fecha, i.nombre, i.descripcion, i.monto, ci.nombre AS categoria
+                FROM ingresos i
+                INNER JOIN categorias_ingreso ci
+                    ON ci.id_usuario = i.id_usuario AND ci.id_categoria = i.id_categoria
+                WHERE i.id_usuario = ? AND i.id_estado = 2
+                  AND i.fecha BETWEEN ? AND ?
+                ORDER BY i.fecha DESC, i.id_ingreso DESC";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("iss", $id_usuario, $fechaInicio, $fechaFin);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
     public static function eliminar($id_usuario, $id_ingreso) {
         $db = Database::conectar();
 

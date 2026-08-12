@@ -46,6 +46,19 @@
             : [];
         const categoriasGasto = gastosPorCategoriaArregloJavaScript.map(dato => dato.categoria);
         const montosGasto = gastosPorCategoriaArregloJavaScript.map(dato => dato.total);
+        const coloresCategorias = [
+            "#3fb68b",
+            "#f39640",
+            "#0e4f4a",
+            "#ef476f",
+            "#8ecae6",
+            "#ffb703",
+            "#7b2cbf",
+            "#2a9d8f",
+            "#f94144",
+            "#94d2bd"
+        ];
+        const coloresPorCategoria = categoriasGasto.map((_, indice) => coloresCategorias[indice % coloresCategorias.length]);
 
         // Gráfico de ingresos y gastos últimos 6 meses
         const graficoSeisMeses = document.getElementById("grafico-seis-meses");
@@ -120,7 +133,9 @@
 
                     data: montosGasto,
 
-                    backgroundColor: "#9ca3af",
+                    backgroundColor: coloresPorCategoria,
+                    borderColor: "#ffffff",
+                    borderWidth: 1,
                     borderRadius: 0
                 }]
             },
@@ -813,7 +828,8 @@
         ];
 
         formReporte.addEventListener("submit", function (e) {
-            e.preventDefault();
+            // Los filtros se procesan en PHP con los datos reales de la base de datos.
+            return;
             const categoriaSeleccionada = categoria.value;
             tbody.innerHTML = "";
             let resultados = datos.filter(function (dato) {
@@ -880,9 +896,9 @@
                 `;
         }
 
-        // Simulación de descarga
+        // Descargar el reporte como PDF desde la impresión del navegador
         btnDescargar.addEventListener("click", function () {
-            alert("Reporte descargado correctamente");
+            window.print();
         });
     });
     

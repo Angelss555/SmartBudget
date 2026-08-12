@@ -175,12 +175,20 @@ body {
 }
 
 .btn-eliminar {
-    background-color: #e63946;
-    color: white;
+    background-color: #fff5f5;
+    color: #c92a36;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(201, 42, 54, 0.25);
+    box-shadow: 0 2px 8px rgba(201, 42, 54, 0.08);
+    transition: all 0.2s ease;
 }
 
 .btn-eliminar:hover {
-    background-color: #c92a36;
+    background-color: #ffe7e9;
+    color: #a61e2a;
+    border-color: rgba(166, 30, 42, 0.35);
+    box-shadow: 0 6px 14px rgba(201, 42, 54, 0.10);
 }
 
 
@@ -378,6 +386,74 @@ body {
     color: #0e4f4a;
     font-size: 20px;
     margin-bottom: 20px;
+}
+
+.graficos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.graficos .tarjeta-grafico h2 {
+    margin-bottom: 16px;
+}
+
+.placeholder-grafico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-height: 120px;
+    padding: 18px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2ece8;
+    background: linear-gradient(180deg, #f8fbfa 0%, #f1f6f5 100%);
+    box-shadow: 0 4px 12px rgba(14, 79, 74, 0.03);
+    color: #1f2d2a;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+#grafico-distribucion {
+    background: #fdf0f2;
+    border-color: #f1d9df;
+}
+
+#grafico-ingresos {
+    background: #eaf9f4;
+    border-color: #d1eee5;
+}
+
+#grafico-balance {
+    background: #edf5f8;
+    border-color: #dfeaf1;
+}
+
+.placeholder-grafico strong {
+    color: #0e4f4a;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.placeholder-grafico .valor-reporte {
+    color: #0e4f4a;
+    font-size: 27px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.placeholder-grafico .valor-reporte.gasto {
+    color: #d93d4a;
+}
+
+.placeholder-grafico .valor-reporte.ingreso {
+    color: #1d9a6d;
+}
+
+.placeholder-grafico small {
+    color: #6b7280;
+    line-height: 1.4;
 }
 
 .tarjeta-gasto-categoria, .tarjeta-ingreso-gastos-metas-comprometido {
@@ -814,6 +890,43 @@ body {
 .toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);}
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .topbar,
+    .menu-principal,
+    .usuario-sesion,
+    .btn-primario,
+    .btn-secundario,
+    .btn-salir,
+    .footer-app,
+    .tarjeta-formulario,
+    .graficos {
+        display: none !important;
+    }
+
+    .contenido {
+        max-width: 100%;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .tarjeta-tabla {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 0;
+        display: block;
+    }
+
+    .tabla-datos {
+        width: 100%;
+        font-size: 12px;
+    }
+}
 
 /* Media Queries */ 
 
