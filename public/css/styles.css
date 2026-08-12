@@ -407,18 +407,18 @@ body {
     background-color: #f8fcfb;
     border: 1px dashed #cfe0d9;
     border-radius: 14px;
-    padding: 12px;
+    padding: 6px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    min-height: 155px;
+    gap: 12px;
+    min-height: 0;
 }
 
 .meta-circular-placeholder canvas {
-    width: 100% !important;
-    max-width: 120px;
-    aspect-ratio: 1 / 1;
+    width: 200px !important;
+    height: 200px !important;
+    max-width: 100%;
 }
 
 .meta-circular-placeholder span {

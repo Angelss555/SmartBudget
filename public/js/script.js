@@ -50,6 +50,16 @@
         // Gráfico de ingresos y gastos últimos 6 meses
         const graficoSeisMeses = document.getElementById("grafico-seis-meses");
 
+        //Gráfico circular de la meta 1
+        const graficoMeta1 = document.getElementById("grafico-meta-1");
+        //Gráfico circular de la meta 2
+        const graficoMeta2 = document.getElementById("grafico-meta-2");
+        //Gráfico circular de la meta 3
+        const graficoMeta3 = document.getElementById("grafico-meta-3");
+        //Gráfico circular de la meta 4
+        const graficoMeta4 = document.getElementById("grafico-meta-4");
+
+
         //Datos de ingresos
         const ingresosSeisMesesData = document.getElementById("ingresos-seis-meses-data");//Obtiene el elemento del DOM que contiene los datos en formato JSON
         const ingresoSeisMesesArregloJavaScript = ingresosSeisMesesData//Convierte los datos JSON en un arreglo de JavaScript
@@ -66,16 +76,37 @@
         const mesesGasto = gastosSeisMesesArregloJavaScript.map(dato => dato.mes);
         const montosGastoSeisMeses = gastosSeisMesesArregloJavaScript.map(dato => dato.total);
 
-        //Datos de metas
+        //Datos de metas durante los últimos 6 meses
         const metasSeisMesesData = document.getElementById("metas-seis-meses-data");//Obtiene el elemento del DOM que contiene los datos en formato JSON
         const metasSeisMesesArregloJavaScript = metasSeisMesesData//Convierte los datos JSON en un arreglo de JavaScript
             ? JSON.parse(metasSeisMesesData.textContent)
             : [];
         const mesesMetas = metasSeisMesesArregloJavaScript.map(dato => dato.mes);
         const montosMetasSeisMeses = metasSeisMesesArregloJavaScript.map(dato => dato.total);
-
-
+        
+        //Calculo del dinero comprometido (Gastos + Metas) para cada mes
         const montosDineroComprometido = montosGastoSeisMeses.map((gasto, indice) => gasto + (montosMetasSeisMeses[indice] || 0));
+
+        //Datos de las primeras 4 metas registradas.
+        const metasCircularesData = document.getElementById("metas-circulares-data");
+        const metasCircularesArregloJavaScript = metasCircularesData//Convierte los datos JSON en un arreglo de JavaScript
+            ? JSON.parse(metasCircularesData.textContent)
+            : [];
+
+        const meta1 = metasCircularesArregloJavaScript[0] ?? null;
+        const meta2 = metasCircularesArregloJavaScript[1] ?? null;
+        const meta3 = metasCircularesArregloJavaScript[2] ?? null;
+        const meta4 = metasCircularesArregloJavaScript[3] ?? null;
+
+        const porcentajeMeta1 = Number(meta1?.porcentaje ?? 0);
+        const porcentajeMeta2 = Number(meta2?.porcentaje ?? 0);
+        const porcentajeMeta3 = Number(meta3?.porcentaje ?? 0);
+        const porcentajeMeta4 = Number(meta4?.porcentaje ?? 0);
+
+        const porcentajePendienteMeta1 = 100 - porcentajeMeta1;
+        const porcentajePendienteMeta2 = 100 - porcentajeMeta2;
+        const porcentajePendienteMeta3 = 100 - porcentajeMeta3;
+        const porcentajePendienteMeta4 = 100 - porcentajeMeta4;
 
 
         new Chart(graficoCategorias, {
@@ -195,8 +226,259 @@
                 }
             }
         });
-    });
 
+        const porcentajeCentro = {
+            id: "porcentajeCentro",
+
+            afterDatasetsDraw(chart) {
+                const porcentaje = Number(
+                    chart.data.datasets[0].data[0]
+                );
+
+                const centro = chart.getDatasetMeta(0).data[0];
+                const ctx = chart.ctx;
+
+                ctx.save();
+                ctx.font = "bold 16px Arial";
+                ctx.fillStyle = "#0e4f4a";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                ctx.fillText(
+                    porcentaje.toFixed(1) + "%",
+                    centro.x,
+                    centro.y
+                );
+
+                ctx.restore();
+            }
+        };
+
+        new Chart(graficoMeta1, {
+            type: "doughnut",
+            data: {
+                labels: ["Completado", "Pendiente"],
+                datasets: [{
+                    data: [
+                        porcentajeMeta1, porcentajePendienteMeta1
+                    ],
+
+                    backgroundColor: meta1
+                    ? ["#10b981", "#d1d5db"]
+                    : ["#e5e7eb", "#e5e7eb"],
+
+                    borderWidth: 0 
+                }]
+            },
+
+            plugins: [porcentajeCentro],
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: "60%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: Boolean(meta1),
+
+
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ": " +
+                                    Number(context.raw).toFixed(1) + "%";
+                            },
+
+                            afterLabel: function () {
+                                return [
+                                    "Monto actual: ₡" +
+                                        Number(meta1.monto_actual)
+                                            .toLocaleString("es-CR"),
+
+                                    "Monto objetivo: ₡" +
+                                        Number(meta1.monto_objetivo)
+                                            .toLocaleString("es-CR")
+                                ];
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
+        new Chart(graficoMeta2, {
+            type: "doughnut",
+            data: {
+                labels: ["Completado", "Pendiente"],
+                datasets: [{
+                    data: [
+                        porcentajeMeta2, porcentajePendienteMeta2
+                    ],
+
+                    backgroundColor: meta2
+                        ? ["#3b82f6", "#d1d5db"]
+                        : ["#e5e7eb", "#e5e7eb"],
+
+                    borderWidth: 0 
+                }]
+            },
+
+            plugins: [porcentajeCentro],
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: "60%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: Boolean(meta2),
+
+
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ": " +
+                                    Number(context.raw).toFixed(1) + "%";
+                            },
+
+                            afterLabel: function () {
+                                return [
+                                    "Monto actual: ₡" +
+                                        Number(meta2.monto_actual)
+                                            .toLocaleString("es-CR"),
+
+                                    "Monto objetivo: ₡" +
+                                        Number(meta2.monto_objetivo)
+                                            .toLocaleString("es-CR")
+                                ];
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
+        new Chart(graficoMeta3, {
+            type: "doughnut",
+            data: {
+                labels: ["Completado", "Pendiente"],
+                datasets: [{
+                    data: [
+                        porcentajeMeta3, porcentajePendienteMeta3
+                    ],
+
+                    backgroundColor: meta3
+                        ? ["#8b5cf6", "#d1d5db"]
+                        : ["#e5e7eb", "#e5e7eb"],
+
+                    borderWidth: 0 
+                }]
+            },
+
+            plugins: [porcentajeCentro],
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: "60%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: Boolean(meta3),
+
+
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ": " +
+                                    Number(context.raw).toFixed(1) + "%";
+                            },
+
+                            afterLabel: function () {
+                                return [
+                                    "Monto actual: ₡" +
+                                        Number(meta3.monto_actual)
+                                            .toLocaleString("es-CR"),
+
+                                    "Monto objetivo: ₡" +
+                                        Number(meta3.monto_objetivo)
+                                            .toLocaleString("es-CR")
+                                ];
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
+        new Chart(graficoMeta4, {
+            type: "doughnut",
+            data: {
+                labels: ["Completado", "Pendiente"],
+                datasets: [{
+                    data: [
+                        porcentajeMeta4, porcentajePendienteMeta4
+                    ],
+
+                    backgroundColor: meta4
+                        ? ["#f59e0b", "#d1d5db"]
+                        : ["#e5e7eb", "#e5e7eb"],
+
+                    borderWidth: 0 
+                }]
+            },
+
+            plugins: [porcentajeCentro],
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: "60%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: Boolean(meta4),
+
+
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ": " +
+                                    Number(context.raw).toFixed(1) + "%";
+                            },
+
+                            afterLabel: function () {
+                                return [
+                                    "Monto actual: ₡" +
+                                        Number(meta4.monto_actual)
+                                            .toLocaleString("es-CR"),
+
+                                    "Monto objetivo: ₡" +
+                                        Number(meta4.monto_objetivo)
+                                            .toLocaleString("es-CR")
+                                ];
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+    });
+    
 
 
     window.addEventListener('load', function () {

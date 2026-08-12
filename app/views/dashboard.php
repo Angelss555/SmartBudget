@@ -29,7 +29,7 @@ $meses = [
     11 => 'noviembre',
     12 => 'diciembre'
 ];
-$mesActual = $meses[(int) date('n')];
+$nombreMesActual = $meses[(int) date('n')];
 $resultadoGastosCategoria = Gasto::obtenerTotalesPorCategoria($id_usuario);
 $arregloGastosCategoria = [];
 
@@ -56,10 +56,42 @@ while ($fila = $resultadosIngresosSeisMeses->fetch_assoc()) {
     $totalesIngresosPorMes[$fila['mes_anio']] = (float) $fila['total'];
 }
 
-$metas = []; //Lista de metas del usuario
+$metas = [];
 while ($fila = $resultadoMetas->fetch_assoc()) {
-    $metas[] =  $fila;
+    $metas[] = $fila;
 }
+
+// Preparar los datos para los gráficos circulares de metas
+$arregloCuatroMetasCirculares = [];
+for($i = 0; $i < 4 && $i < count($metas); $i++) {
+    //Obtener la meta de la iteración actual
+    $meta = $metas[$i];
+
+    //Calculando los meses ahorrados
+    $mesInicio = new DateTime($meta['fecha_inicio']);
+    $mesInicio->modify('first day of this month');
+    $mesActual = new DateTime('first day of this month');
+    $mesesAhorrados = 0;
+
+    if ($mesInicio <= $mesActual) {
+        $diferencia = $mesInicio->diff($mesActual);
+        $mesesAhorrados = ($diferencia->y * 12) + $diferencia->m + 1;
+    }
+    $montoObjetivo = (float) $meta['monto_objetivo'];
+    $montoActual = (float) $meta['monto_inicial']
+        + ((float) $meta['cuota'] * $mesesAhorrados);
+
+    $montoActual = min($montoActual, $montoObjetivo);
+    $porcentaje = $montoObjetivo > 0 ? ($montoActual / $montoObjetivo) * 100 : 0;
+
+    $arregloCuatroMetasCirculares[] = [
+        'nombre' => $meta['nombre'],
+        'monto_actual' => round((float) $montoActual, 2),
+        'monto_objetivo' => (float) $meta['monto_objetivo'],
+        'porcentaje' => round((float) $porcentaje, 1)
+    ];
+}
+
 
 
 
@@ -71,7 +103,7 @@ $arregloMetasSeisMeses = [];
 $fecha = new DateTime('first day of this month');
 $fecha->modify('-5 months');
 
-// Crear exactamente seis meses
+// Crea arreglos de 6 meses de metas, ingresos y gastos, incluyendo meses sin datos
 for ($i = 0; $i < 6; $i++) {
     $mes = $fecha->format('Y-m');
     $inicioMes = $fecha->format('Y-m-01');
@@ -185,7 +217,7 @@ for ($i = 0; $i < 6; $i++) {
         <section class="zona-analitica" aria-label="Gráficos y metas">
             <div class="tarjeta-grafico">
                 <div class="tarjeta-gasto-categoria">
-                    <h2>Gastos por categoría del mes de <?php echo $mesActual; ?></h2>
+                    <h2>Gastos por categoría del mes de <?php echo $nombreMesActual; ?></h2>
                     <div class="grafico-categoria-contenedor">
                         <canvas id="grafico-categorias" aria-label="Gráfico de gastos por categoría"></canvas>
                     </div>
@@ -206,20 +238,20 @@ for ($i = 0; $i < 6; $i++) {
                     <h2>Resumen de cumplimiento de metas</h2>
                     <div class="metas-circulares-grid">
                         <div class="meta-circular-placeholder">
-                            <canvas id="meta-circular-1" aria-label="Gráfico circular de meta 1"></canvas>
-                            <span>Meta 1</span>
+                            <canvas id="grafico-meta-1" aria-label="Gráfico circular de meta 1"></canvas>
+                            <span>Meta 1: <?php echo htmlspecialchars($arregloCuatroMetasCirculares[0]['nombre'] ?? 'Agrega una meta'); ?></span>
                         </div>
                         <div class="meta-circular-placeholder">
-                            <canvas id="meta-circular-2" aria-label="Gráfico circular de meta 2"></canvas>
-                            <span>Meta 2</span>
+                            <canvas id="grafico-meta-2" aria-label="Gráfico circular de meta 2"></canvas>
+                            <span>Meta 2: <?php echo htmlspecialchars($arregloCuatroMetasCirculares[1]['nombre'] ?? 'Agrega una meta'); ?></span>
                         </div>
                         <div class="meta-circular-placeholder">
-                            <canvas id="meta-circular-3" aria-label="Gráfico circular de meta 3"></canvas>
-                            <span>Meta 3</span>
+                            <canvas id="grafico-meta-3" aria-label="Gráfico circular de meta 3"></canvas>
+                            <span>Meta 3: <?php echo htmlspecialchars($arregloCuatroMetasCirculares[2]['nombre'] ?? 'Agrega una meta'); ?></span>
                         </div>
                         <div class="meta-circular-placeholder">
-                            <canvas id="meta-circular-4" aria-label="Gráfico circular de meta 4"></canvas>
-                            <span>Meta 4</span>
+                            <canvas id="grafico-meta-4" aria-label="Gráfico circular de meta 4"></canvas>
+                            <span>Meta 4: <?php echo htmlspecialchars($arregloCuatroMetasCirculares[3]['nombre'] ?? 'Agrega una meta'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -259,6 +291,10 @@ for ($i = 0; $i < 6; $i++) {
     <script id="metas-seis-meses-data" type="application/json"><?php
         echo json_encode($arregloMetasSeisMeses, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
     ?></script>
+    <script id="metas-circulares-data" type="application/json"><?php
+        echo json_encode($arregloCuatroMetasCirculares, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+    ?></script>
+    
     <script src="../../public/js/script.js"></script>
 </body>
 </html>
