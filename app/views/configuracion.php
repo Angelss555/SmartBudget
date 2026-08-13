@@ -1,10 +1,26 @@
 <?php
 session_start();
+require_once "../models/ConfiguracionNotificaciones.php";
 
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../../public/index.php");
     exit();
 }
+
+$id_usuario = (int) $_SESSION['usuario']['id_usuario'];
+$configuraciones = ConfiguracionNotificaciones::obtenerPorUsuario($id_usuario);
+$configPorTipo = [];
+
+while ($config = $configuraciones->fetch_assoc()) {
+    $configPorTipo[(int) $config['id_tipo']] = $config;
+}
+
+$reporteAppChecked = (!empty($configPorTipo[4]) && (int) $configPorTipo[4]['notificacion_app'] === 1) ? 'checked' : '';
+$reporteCorreoChecked = (!empty($configPorTipo[4]) && (int) $configPorTipo[4]['notificacion_correo'] === 1) ? 'checked' : '';
+$pagosAppChecked = (!empty($configPorTipo[1]) && (int) $configPorTipo[1]['notificacion_app'] === 1) ? 'checked' : '';
+$pagosCorreoChecked = (!empty($configPorTipo[1]) && (int) $configPorTipo[1]['notificacion_correo'] === 1) ? 'checked' : '';
+$excesoAppChecked = (!empty($configPorTipo[3]) && (int) $configPorTipo[3]['notificacion_app'] === 1) ? 'checked' : '';
+$excesoCorreoChecked = (!empty($configPorTipo[3]) && (int) $configPorTipo[3]['notificacion_correo'] === 1) ? 'checked' : '';
 ?>
 
 <!DOCTYPE html>
@@ -58,24 +74,24 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="campo campo-switch">
                     <label for="reporte-app">Reporte financiero mensual</label>
                     <div>
-                        <label><input type="checkbox" id="reporte-app" name="reporte_app" value="1" checked> App</label>
-                        <label><input type="checkbox" id="reporte-correo" name="reporte_correo" value="1" checked> Correo</label>
+                        <label><input type="checkbox" id="reporte-app" name="reporte_app" value="1" <?php echo $reporteAppChecked; ?>> App</label>
+                        <label><input type="checkbox" id="reporte-correo" name="reporte_correo" value="1" <?php echo $reporteCorreoChecked; ?>> Correo</label>
                     </div>
                 </div>
 
                 <div class="campo campo-switch">
                     <label for="pagos-app">Alertas de próximos pagos</label>
                     <div>
-                        <label><input type="checkbox" id="pagos-app" name="pagos_app" value="1" checked> App</label>
-                        <label><input type="checkbox" id="pagos-correo" name="pagos_correo" value="1" checked> Correo</label>
+                        <label><input type="checkbox" id="pagos-app" name="pagos_app" value="1" <?php echo $pagosAppChecked; ?>> App</label>
+                        <label><input type="checkbox" id="pagos-correo" name="pagos_correo" value="1" <?php echo $pagosCorreoChecked; ?>> Correo</label>
                     </div>
                 </div>
 
                 <div class="campo campo-switch">
                     <label for="exceso-app">Aviso al sobrepasar el monto máximo de una categoría</label>
                     <div>
-                        <label><input type="checkbox" id="exceso-app" name="exceso_app" value="1" checked> App</label>
-                        <label><input type="checkbox" id="exceso-correo" name="exceso_correo" value="1" checked> Correo</label>
+                        <label><input type="checkbox" id="exceso-app" name="exceso_app" value="1" <?php echo $excesoAppChecked; ?>> App</label>
+                        <label><input type="checkbox" id="exceso-correo" name="exceso_correo" value="1" <?php echo $excesoCorreoChecked; ?>> Correo</label>
                     </div>
                 </div>
 
@@ -112,3 +128,4 @@ if (!isset($_SESSION['usuario'])) {
     <script src="../../public/js/script.js"></script>
 </body>
 </html>
+

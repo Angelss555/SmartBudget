@@ -147,7 +147,8 @@ usort($movimientos, fn($a, $b) => strcmp($b['fecha'], $a['fecha']));
                         <tr class="fila-vacia"><td colspan="5">No hay movimientos para el filtro seleccionado.</td></tr>
                     <?php else: ?>
                         <?php foreach ($movimientos as $movimiento): ?>
-                            <tr>
+                            <?php $claseFila = $movimiento['tipo'] === 'Gasto' ? 'fila-gasto' : 'fila-ingreso'; ?>
+                            <tr class="<?php echo $claseFila; ?>">
                                 <td><?php echo (new DateTime($movimiento['fecha']))->format('d/m/Y'); ?></td>
                                 <td><?php echo htmlspecialchars($movimiento['tipo']); ?></td>
                                 <td><?php echo htmlspecialchars($movimiento['categoria']); ?></td>

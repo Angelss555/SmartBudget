@@ -704,8 +704,24 @@ body {
     border-bottom: none;
 }
 
+.tabla-datos tbody tr.fila-ingreso {
+    background-color:#e0fadd;
+}
+
+.tabla-datos tbody tr.fila-gasto {
+    background-color: #ffdbd8;
+}
+
 .tabla-datos tbody tr:hover {
     background-color: #f7fcfa;
+}
+
+.tabla-datos tbody tr.fila-ingreso:hover {
+    background-color: #ccfac7;
+}
+
+.tabla-datos tbody tr.fila-gasto:hover {
+    background-color: #fdd0cd;
 }
 
 .tabla-datos tbody td {
