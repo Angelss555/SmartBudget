@@ -105,15 +105,6 @@ $gastosSeisMeses = Gasto::obtenerTotalesUltimosSeisMeses($id_usuario);
         <section class="tarjeta-tabla">
             <div class="encabezado-tabla">
                     <h2>Listado de gastos</h2>
-
-                <div class="filtros">
-                    <label for="filtro-periodo">Periodo</label>
-                    <select id="filtro-periodo" name="periodo">
-                        <option value="mes-actual">Mes actual</option>
-                        <option value="ultimos-3">Últimos 3 meses</option>
-                        <option value="ultimos-6">Últimos 6 meses</option>
-                    </select>
-                </div>
             </div>
 
             <table class="tabla-datos" id="tabla-gastos">
