@@ -60,7 +60,7 @@ class Ingreso {
                     i.id_estado,
                     ci.nombre AS categoria
                 FROM ingresos AS i
-                INNER JOIN categorias_ingreso AS ci ON i.id_usuario = ci.id_usuario AND i.id_categoria = ci.id_categoria
+                INNER JOIN categorias_ingreso AS ci ON i.id_categoria = ci.id_categoria
                 WHERE i.id_usuario = ?
                 ORDER BY i.fecha DESC, i.id_ingreso DESC";
         
@@ -114,7 +114,7 @@ class Ingreso {
         $sql = "SELECT i.fecha, i.nombre, i.descripcion, i.monto, ci.nombre AS categoria
                 FROM ingresos i
                 INNER JOIN categorias_ingreso ci
-                    ON ci.id_usuario = i.id_usuario AND ci.id_categoria = i.id_categoria
+                    ON ci.id_categoria = i.id_categoria
                 WHERE i.id_usuario = ? AND i.id_estado = 2
                   AND i.fecha BETWEEN ? AND ?
                 ORDER BY i.fecha DESC, i.id_ingreso DESC";

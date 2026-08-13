@@ -35,14 +35,10 @@ CREATE TABLE usuarios (
 SELECT * FROM usuarios;
 
 CREATE TABLE categorias_ingreso(
-    id_usuario INT NOT NULL,
-	id_categoria INT NOT NULL,
+	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     id_estado INT NOT NULL,
 
-    CONSTRAINT categorias_ingreso_id_usuario_id_categoria_pk PRIMARY KEY(id_usuario, id_categoria),
-
-    CONSTRAINT categorias_ingreso_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT categorias_ingreso_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
 
@@ -58,20 +54,16 @@ CREATE TABLE ingresos(
 
     CONSTRAINT ingresos_id_usuario_id_ingreso_pk PRIMARY KEY(id_usuario, id_ingreso),
 
-    CONSTRAINT ingresos_id_usuario_id_categoria_fk FOREIGN KEY(id_usuario, id_categoria) REFERENCES categorias_ingreso(id_usuario, id_categoria),
+    CONSTRAINT ingresos_id_categoria_fk FOREIGN KEY(id_categoria) REFERENCES categorias_ingreso(id_categoria),
     CONSTRAINT ingresos_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT ingresos_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
 
 CREATE TABLE categorias_gasto(
-    id_usuario INT NOT NULL,
-    id_categoria INT NOT NULL,
+	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
-    id_estado INT,
+    id_estado INT NOT NULL,
 
-    CONSTRAINT categorias_gasto_id_usuario_id_categoria_pk PRIMARY KEY(id_usuario, id_categoria),
-
-    CONSTRAINT categorias_gasto_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT categorias_gasto_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
 
@@ -87,7 +79,7 @@ CREATE TABLE gastos(
 
     CONSTRAINT gastos_id_usuario_id_gasto_pk PRIMARY KEY(id_usuario, id_gasto),
 
-    CONSTRAINT gastos_id_usuario_id_categoria_fk FOREIGN KEY(id_usuario, id_categoria) REFERENCES categorias_gasto(id_usuario, id_categoria),
+    CONSTRAINT gastos_id_categoria_fk FOREIGN KEY(id_categoria) REFERENCES categorias_gasto(id_categoria),
     CONSTRAINT gastos_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT gastos_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
@@ -104,7 +96,7 @@ CREATE TABLE recordatorios_pago(
 
     CONSTRAINT recordatorios_pago_id_usuario_id_recordatorio_pk PRIMARY KEY(id_usuario, id_recordatorio),
 
-    CONSTRAINT recordatorios_pago_id_usuario_id_categoria_fk FOREIGN KEY(id_usuario, id_categoria) REFERENCES categorias_gasto(id_usuario, id_categoria),
+    CONSTRAINT recordatorios_pago_id_categoria_fk FOREIGN KEY(id_categoria) REFERENCES categorias_gasto(id_categoria),
     CONSTRAINT recordatorios_pago_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT recordatorios_pago_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
@@ -175,8 +167,8 @@ CREATE TABLE presupuestos_categorias(
 
     CONSTRAINT presupuestos_categorias_id_usuario_id_categoria_mes_anio_pk PRIMARY KEY(id_usuario, id_categoria, mes, anio),
 
-    CONSTRAINT presupuestos_categorias_id_usuario_id_categoria_fk FOREIGN KEY(id_usuario, id_categoria) REFERENCES categorias_gasto(id_usuario, id_categoria),
     CONSTRAINT presupuestos_categorias_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
+    CONSTRAINT presupuestos_categorias_id_categoria_fk FOREIGN KEY(id_categoria) REFERENCES categorias_gasto(id_categoria),
     CONSTRAINT presupuestos_categorias_id_estado_fk FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 );
 
@@ -194,68 +186,20 @@ VALUES
 ('Ángel', 'Rodríguez', 'Vargas', 'angel@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2),
 ('Xavier', 'Marín', 'Araya', 'xavier@correo.com', '$2y$10$DjJasykFWOMX4OdOBXLXaeKlwigwrOjZv7tj9qg/HesoycL5/cn6C', 2);
 
-INSERT INTO categorias_ingreso (id_usuario, id_categoria, nombre, id_estado)
+INSERT INTO categorias_ingreso (id_categoria, nombre, id_estado)
 VALUES
-(1, 1, 'Salario', 2),
-(1, 2, 'Freelance / Trabajo independiente', 2),
-(1, 3, 'Negocio propio', 2),
-(1, 4, 'Bonos y comisiones', 2),
-(1, 5, 'Inversiones', 2),
-(1, 6, 'Alquileres', 2),
-(1, 7, 'Reembolsos', 2),
-(1, 8, 'Regalos', 2),
-(1, 9, 'Ayuda familiar', 2),
-(1, 10, 'Becas', 2),
-(1, 11, 'Ventas ocasionales', 2),
-(1, 12, 'Otros ingresos', 2),
-(2, 1, 'Salario', 2),
-(2, 2, 'Freelance / Trabajo independiente', 2),
-(2, 3, 'Negocio propio', 2),
-(2, 4, 'Bonos y comisiones', 2),
-(2, 5, 'Inversiones', 2),
-(2, 6, 'Alquileres', 2),
-(2, 7, 'Reembolsos', 2),
-(2, 8, 'Regalos', 2),
-(2, 9, 'Ayuda familiar', 2),
-(2, 10, 'Becas', 2),
-(2, 11, 'Ventas ocasionales', 2),
-(2, 12, 'Otros ingresos', 2),
-(3, 1, 'Salario', 2),
-(3, 2, 'Freelance / Trabajo independiente', 2),
-(3, 3, 'Negocio propio', 2),
-(3, 4, 'Bonos y comisiones', 2),
-(3, 5, 'Inversiones', 2),
-(3, 6, 'Alquileres', 2),
-(3, 7, 'Reembolsos', 2),
-(3, 8, 'Regalos', 2),
-(3, 9, 'Ayuda familiar', 2),
-(3, 10, 'Becas', 2),
-(3, 11, 'Ventas ocasionales', 2),
-(3, 12, 'Otros ingresos', 2),
-(4, 1, 'Salario', 2),
-(4, 2, 'Freelance / Trabajo independiente', 2),
-(4, 3, 'Negocio propio', 2),
-(4, 4, 'Bonos y comisiones', 2),
-(4, 5, 'Inversiones', 2),
-(4, 6, 'Alquileres', 2),
-(4, 7, 'Reembolsos', 2),
-(4, 8, 'Regalos', 2),
-(4, 9, 'Ayuda familiar', 2),
-(4, 10, 'Becas', 2),
-(4, 11, 'Ventas ocasionales', 2),
-(4, 12, 'Otros ingresos', 2),
-(5, 1, 'Salario', 2),
-(5, 2, 'Freelance / Trabajo independiente', 2),
-(5, 3, 'Negocio propio', 2),
-(5, 4, 'Bonos y comisiones', 2),
-(5, 5, 'Inversiones', 2),
-(5, 6, 'Alquileres', 2),
-(5, 7, 'Reembolsos', 2),
-(5, 8, 'Regalos', 2),
-(5, 9, 'Ayuda familiar', 2),
-(5, 10, 'Becas', 2),
-(5, 11, 'Ventas ocasionales', 2),
-(5, 12, 'Otros ingresos', 2);
+(1, 'Salario', 2),
+(2, 'Freelance / Trabajo independiente', 2),
+(3, 'Negocio propio', 2),
+(4, 'Bonos y comisiones', 2),
+(5, 'Inversiones', 2),
+(6, 'Alquileres', 2),
+(7, 'Reembolsos', 2),
+(8, 'Regalos', 2),
+(9, 'Ayuda familiar', 2),
+(10, 'Becas', 2),
+(11, 'Ventas ocasionales', 2),
+(12, 'Otros ingresos', 2);
 
 
 INSERT INTO ingresos(id_usuario, id_ingreso, nombre, monto, fecha, descripcion, id_categoria, id_estado)
@@ -302,63 +246,19 @@ VALUES
 (5, 7, 'Salario julio 2026', 675000.00, '2026-07-15', 'Salario mensual correspondiente a julio de 2026', 1, 2),
 (5, 8, 'Salario agosto 2026', 675000.00, '2026-08-15', 'Salario mensual correspondiente a agosto de 2026', 1, 2);
 
-INSERT INTO categorias_gasto (id_usuario, id_categoria, nombre, id_estado)
+INSERT INTO categorias_gasto (id_categoria, nombre, id_estado)
 VALUES
-(1, 1, 'Alimentación', 2),
-(1, 2, 'Transporte', 2),
-(1, 3, 'Salud', 2),
-(1, 4, 'Educación', 2),
-(1, 5, 'Ocio', 2),
-(1, 6, 'Membresías y suscripciones', 2),
-(1, 7, 'Ahorros programados', 2),
-(1, 8, 'Pagos municipales', 2),
-(1, 9, 'Tarjetas de crédito', 2),
-(1, 10, 'Servicios básicos', 2),
-(1, 11, 'Otros gastos', 2),
-(2, 1, 'Alimentación', 2),
-(2, 2, 'Transporte', 2),
-(2, 3, 'Salud', 2),
-(2, 4, 'Educación', 2),
-(2, 5, 'Ocio', 2),
-(2, 6, 'Membresías y suscripciones', 2),
-(2, 7, 'Ahorros programados', 2),
-(2, 8, 'Pagos municipales', 2),
-(2, 9, 'Tarjetas de crédito', 2),
-(2, 10, 'Servicios básicos', 2),
-(2, 11, 'Otros gastos', 2),
-(3, 1, 'Alimentación', 2),
-(3, 2, 'Transporte', 2),
-(3, 3, 'Salud', 2),
-(3, 4, 'Educación', 2),
-(3, 5, 'Ocio', 2),
-(3, 6, 'Membresías y suscripciones', 2),
-(3, 7, 'Ahorros programados', 2),
-(3, 8, 'Pagos municipales', 2),
-(3, 9, 'Tarjetas de crédito', 2),
-(3, 10, 'Servicios básicos', 2),
-(3, 11, 'Otros gastos', 2),
-(4, 1, 'Alimentación', 2),
-(4, 2, 'Transporte', 2),
-(4, 3, 'Salud', 2),
-(4, 4, 'Educación', 2),
-(4, 5, 'Ocio', 2),
-(4, 6, 'Membresías y suscripciones', 2),
-(4, 7, 'Ahorros programados', 2),
-(4, 8, 'Pagos municipales', 2),
-(4, 9, 'Tarjetas de crédito', 2),
-(4, 10, 'Servicios básicos', 2),
-(4, 11, 'Otros gastos', 2),
-(5, 1, 'Alimentación', 2),
-(5, 2, 'Transporte', 2),
-(5, 3, 'Salud', 2),
-(5, 4, 'Educación', 2),
-(5, 5, 'Ocio', 2),
-(5, 6, 'Membresías y suscripciones', 2),
-(5, 7, 'Ahorros programados', 2),
-(5, 8, 'Pagos municipales', 2),
-(5, 9, 'Tarjetas de crédito', 2),
-(5, 10, 'Servicios básicos', 2),
-(5, 11, 'Otros gastos', 2);
+(1, 'Alimentación', 2),
+(2, 'Transporte', 2),
+(3, 'Salud', 2),
+(4, 'Educación', 2),
+(5, 'Ocio', 2),
+(6, 'Membresías y suscripciones', 2),
+(7, 'Ahorros programados', 2),
+(8, 'Pagos municipales', 2),
+(9, 'Tarjetas de crédito', 2),
+(10, 'Servicios básicos', 2),
+(11, 'Otros gastos', 2);
 
 INSERT INTO gastos(id_usuario, id_gasto, nombre, monto, fecha, descripcion, id_categoria, id_estado)
 VALUES
@@ -597,6 +497,5 @@ SELECT
     i.id_estado
 FROM ingresos AS i
 INNER JOIN categorias_ingreso AS ci
-    ON i.id_usuario = ci.id_usuario
-   AND i.id_categoria = ci.id_categoria
+    ON i.id_categoria = ci.id_categoria
 WHERE i.id_usuario = 5;

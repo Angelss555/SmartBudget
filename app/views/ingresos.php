@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
-$categorias = CategoriaIngreso::obtenerPorUsuario($id_usuario);
+$categorias = CategoriaIngreso::obtenerTodos();
 $ingresos = Ingreso::obtenerPorUsuario($id_usuario);
 
 

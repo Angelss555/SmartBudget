@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
-$categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
+$categorias = CategoriaGasto::obtenerTodos();
 $periodoSeleccionado = $_GET['periodo'] ?? 'actual';
 $periodos = ['actual' => 0, 'mes-1' => 1, 'mes-2' => 2, 'mes-3' => 3, 'mes-4' => 4, 'mes-5' => 5, 'mes-6' => 6];
 $mesesAtras = $periodos[$periodoSeleccionado] ?? 0;

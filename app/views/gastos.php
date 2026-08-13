@@ -9,7 +9,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
-$categorias = CategoriaGasto::obtenerPorUsuario($id_usuario);
+$categorias = CategoriaGasto::obtenerTodos();
 $gastos = Gasto::obtenerPorUsuario($id_usuario);
 $gastosSeisMeses = Gasto::obtenerTotalesUltimosSeisMeses($id_usuario);
 

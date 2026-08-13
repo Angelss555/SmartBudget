@@ -51,8 +51,7 @@ class Gasto {
                        cg.nombre AS categoria
                 FROM gastos g
                 INNER JOIN categorias_gasto cg
-                    ON cg.id_usuario = g.id_usuario
-                   AND cg.id_categoria = g.id_categoria
+                    ON cg.id_categoria = g.id_categoria
                 WHERE g.id_usuario = ?
                 ORDER BY g.fecha DESC, g.id_gasto DESC";
         $stmt = $db->prepare($sql);
@@ -92,12 +91,12 @@ class Gasto {
                        COALESCE(SUM(g.monto), 0) AS total
                 FROM categorias_gasto cg
                 LEFT JOIN gastos g
-                    ON g.id_usuario = cg.id_usuario
-                   AND g.id_categoria = cg.id_categoria
-                   AND g.id_estado = 2
-                   AND YEAR(g.fecha) = YEAR(CURDATE())
-                   AND MONTH(g.fecha) = MONTH(CURDATE())
-                WHERE cg.id_usuario = ?
+                    ON g.id_categoria = cg.id_categoria
+                    AND g.id_usuario = ?
+                    AND g.id_estado = 2
+                    AND YEAR(g.fecha) = YEAR(CURDATE())
+                    AND MONTH(g.fecha) = MONTH(CURDATE())
+                WHERE cg.id_estado = 2
                 GROUP BY cg.id_categoria, cg.nombre
                 ORDER BY cg.nombre";
         $stmt = $db->prepare($sql);
@@ -127,7 +126,7 @@ class Gasto {
         $sql = "SELECT g.fecha, g.nombre, g.descripcion, g.monto, cg.nombre AS categoria
                 FROM gastos g
                 INNER JOIN categorias_gasto cg
-                    ON cg.id_usuario = g.id_usuario AND cg.id_categoria = g.id_categoria
+                    ON cg.id_categoria = g.id_categoria
                 WHERE g.id_usuario = ? AND g.id_estado = 2
                   AND g.fecha BETWEEN ? AND ?";
         if ($id_categoria !== null) {
