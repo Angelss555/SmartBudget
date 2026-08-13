@@ -5,10 +5,25 @@ require_once "../models/Usuario.php";
 // REGISTRO
 if ($_POST['accion'] == "registro") {
 
-    Usuario::registrar($_POST['nombre'], $_POST['primer_apellido'], $_POST['segundo_apellido'], $_POST['email'], $_POST['password']);
+    $emailSinEspacios = trim($_POST['email']);
 
-    header("Location: ../../public/index.php");
-    exit(); 
+    if (Usuario::correoExiste($emailSinEspacios)) {
+        header("Location: ../views/registro.php?error=correo_existe");
+        exit();
+    }
+
+    $registrado = Usuario::registrar($_POST['nombre'], $_POST['primer_apellido'], $_POST['segundo_apellido'], $_POST['email'], $_POST['password1']);
+
+    if ($registrado) {
+        $usuario = Usuario::login($_POST['email'], $_POST['password1']);
+        $_SESSION['usuario'] = $usuario;
+        
+        header("Location: ../views/dashboard.php?registro=ok");
+        exit(); 
+    } else {
+        header("Location: ../../public/index.php?error=registro");
+        exit(); 
+    }
 }
 
 // LOGIN

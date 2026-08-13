@@ -90,6 +90,9 @@ body {
 }
 
 
+
+
+
 /* Botones */
 
 .btn-primario,
@@ -816,9 +819,10 @@ body {
     color: #c92a36;
     padding: 10px;
     border-radius: 8px;
-    font-size: 20px;
+    font-size: 16px;
     margin-bottom: 15px;
     text-align: center;
+    white-space: pre-line;
 }
 
 .enlaces-auth {

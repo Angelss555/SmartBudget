@@ -47,8 +47,8 @@
                 </div>
 
                 <div class="campo">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Crea una contraseña" required minlength="8">
+                    <label for="password1">Contraseña</label>
+                    <input type="password" id="password1" name="password1" placeholder="Crea una contraseña" required minlength="8">
                 </div>
 
                 <div class="campo">
@@ -56,7 +56,13 @@
                     <input type="password" id="password2" name="password2" placeholder="Repite tu contraseña" required minlength="8">
                 </div>
 
-                <p class="mensaje-error" id="mensaje-error" hidden>Las contraseñas no coinciden.</p>
+                <!-- Desactiva el hidden en caso de que haya algún error en las validaciones. -->
+                <p class="mensaje-error" id="mensaje-error"
+                    <?php echo (($_GET['error'] ?? '') === 'correo_existe') ? '' : 'hidden'; ?>
+                >
+                    <?php echo (($_GET['error'] ?? '') === 'correo_existe') ? 'El correo electrónico ya está registrado.' : '';
+                    ?>
+                </p>
 
                 <button type="submit" name="accion" value="registro" class="btn-primario">Registrarme</button>
             </form>

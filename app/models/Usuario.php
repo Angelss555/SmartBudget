@@ -30,6 +30,16 @@ class Usuario {
         return false;
     }
 
+    public static function correoExiste($email) {
+        $db = Database::conectar();
+
+        $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        return $stmt->get_result()->num_rows > 0;
+    }
+
     public static function obtenerTodos() {
         $db = Database::conectar();
 

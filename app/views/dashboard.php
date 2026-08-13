@@ -10,6 +10,8 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $loginOk = isset($_GET['login']) && $_GET['login'] === 'ok';
+$registroOk = isset($_GET['registro']) && $_GET['registro'] === 'ok';
+
 $id_usuario = (int) $_SESSION['usuario']['id_usuario'];
 $totalIngresos = Ingreso::obtenerTotalMesActual($id_usuario);
 $totalGastos = Gasto::obtenerTotalMesActual($id_usuario);
@@ -276,6 +278,12 @@ for ($i = 0; $i < 6; $i++) {
     <?php if ($loginOk): ?>
         <div class="toast toast-success" id="loginToast">
             Inicio de sesión exitoso
+        </div>
+    <?php endif; ?>
+
+    <?php if ($registroOk): ?>
+        <div class="toast toast-success" id="registroToast">
+            Registro exitoso
         </div>
     <?php endif; ?>
 

@@ -505,7 +505,21 @@
 
         setTimeout(function () {
             toast.classList.remove('show');
-        }, 3000);
+        }, 5000);
+
+
+    });
+
+    window.addEventListener('load', function () {
+        const toast = document.getElementById('registroToast');
+
+        if (toast) {
+            toast.classList.add('show');
+        }
+
+        setTimeout(function () {
+            toast.classList.remove('show');
+        }, 5000);
 
 
     });
@@ -704,82 +718,54 @@
         const formRegistro = document.getElementById("form-registro");
         if (!formRegistro) return;
 
-        const usuario = document.getElementById("usuario");
         const nombre = document.getElementById("nombre");
-        const apellido = document.getElementById("apellido");
+        const primer_apellido = document.getElementById("primer_apellido");
+        const segundo_apellido = document.getElementById("segundo_apellido");
         const email = document.getElementById("email");
-        const password = document.getElementById("password");
+        const password1 = document.getElementById("password1");
         const password2 = document.getElementById("password2");
         const mensajeError = document.getElementById("mensaje-error");
 
         formRegistro.addEventListener("submit", function (e) {
-            e.preventDefault();
-
             // Ocultar mensajes anteriores
             mensajeError.hidden = true;
 
             // Obtener valores
-            const usuarioValue = usuario.value.trim();
             const nombreValue = nombre.value.trim();
-            const apellidoValue = apellido.value.trim();
+            const primerApellidoValue = primer_apellido.value.trim();
+            const segundoApellidoValue = segundo_apellido.value.trim();
             const emailValue = email.value.trim();
-            const passwordValue = password.value.trim();
+            const password1Value = password1.value.trim();
             const password2Value = password2.value.trim();
+            const errores = [];
 
             // Validar campos vacíos
-            if (
-                usuarioValue === "" ||
-                nombreValue === "" ||
-                apellidoValue === "" ||
-                emailValue === "" ||
-                passwordValue === "" ||
-                password2Value === ""
-            ) {
-                mensajeError.textContent =
-                    "Debe completar todos los campos.";
-
-                mensajeError.hidden = false;
-                return;
+            if (nombreValue === "" || primerApellidoValue === "" || segundoApellidoValue === "" || emailValue === "" || password1Value === "" || password2Value === "") {
+                errores.push("Por favor complete todos los campos.");
             }
 
             // Validar correo
             const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
             if (!formatoCorreo.test(emailValue)) {
-
-                mensajeError.textContent =
-                    "Ingrese un correo electrónico válido.";
-
-                mensajeError.hidden = false;
-                return;
+                errores.push("Ingrese un correo electrónico válido.");
             }
 
             // Validar longitud contraseña
-            if (passwordValue.length < 8) {
-
-                mensajeError.textContent =
-                    "La contraseña debe tener mínimo 8 caracteres.";
-
-                mensajeError.hidden = false;
-                return;
+            if (password1Value.length < 8) {
+                errores.push("La contraseña debe tener mínimo 8 caracteres.");
             }
 
             // Validar coincidencia
-            if (passwordValue !== password2Value) {
-
-                mensajeError.textContent =
-                    "Las contraseñas no coinciden.";
-
-                mensajeError.hidden = false;
-                return;
+            if (password1Value !== password2Value) {
+                errores.push("Las contraseñas no coinciden.");
             }
 
-            // Simulación de registro exitoso
-            alert("Usuario registrado correctamente");
-
-            // Ir al login
-            window.location.href = "index.html";
-
+            // Mostrar errores si existen y detener el envío del formulario
+            if (errores.length > 0) {
+                e.preventDefault();
+                mensajeError.textContent = errores.join("\n");
+                mensajeError.hidden = false;
+            }
         });
     });
     
